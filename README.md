@@ -14,7 +14,7 @@ saving target.
 
 ## Demo
 
-Be creative with your won style!
+Be creative with your style!
 
 ![demo1](https://github.com/Integrify-Finland/bof-budget-control-app/blob/main/Screenshot%202022-10-10%20at%2017.26.52.png)
 ---
