@@ -1,0 +1,81 @@
+.root {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: 
+    "income expens target"
+    ". balance ." ;
+    grid-gap: 0.3em;
+}
+#formIncome {
+    grid-area: income;
+} 
+#formExpense {
+    grid-area: expens;
+}
+#formTarget {
+    grid-area: target;
+}
+#formBalance {
+    grid-area: balance;
+}
+.root form {
+    padding: 1em;
+     margin: 0.2em;
+     background-color: burlywood;
+     box-shadow: 3px 3px 1px 1px slategray;
+ }
+ .root form div {
+     display: flex;
+     flex-direction: column;
+ }
+ [id*="btn_"] {
+    margin: 0.5em 0;
+    position: relative;
+    border: none;
+    color:black;
+    background-color: bisque;
+    padding: 0.2em;
+    width: 100%;
+    text-align: center;
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  [id*="btn_"]:after {
+    content: "";
+    background: #f1f1f1;
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px !important;
+    margin-top: -120%;
+    opacity: 0;
+    transition: all 0.8s
+  }
+  [id*="btn_"]:active:after {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s
+  }
+  @media only screen and (max-width: 800px) {
+    .root {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: 
+        "income expens"
+        "target balance" ;
+    }
+  }
+  @media only screen and (max-width: 500px) {
+    .root {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+        "income"
+        "expens"
+        "balance"
+        "target" ;
+        grid-gap: 0.2em;
+    }
+  }

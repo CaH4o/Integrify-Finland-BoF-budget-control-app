@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 function Income() {
   return (
@@ -20,7 +20,9 @@ function Income() {
         <label htmlFor="incomeDate">Date of income</label>
         <input type="date" name="incomeDate" id="incomeDate" />
       </div>
-      <button type="button"  id="btn_addIncome">Add income</button>
+      <button type="button" id="btn_addIncome">
+        Add income
+      </button>
     </form>
   );
 }
