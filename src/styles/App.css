@@ -6,25 +6,25 @@
     ". balance ." ;
     grid-gap: 0.3em;
 }
-#formIncome {
+.root section:nth-child(1) {
     grid-area: income;
 } 
-#formExpense {
+.root section:nth-child(2) {
     grid-area: expens;
 }
-#formTarget {
+.root section:nth-child(3) {
     grid-area: target;
 }
-#formBalance {
+.root section:nth-child(4) {
     grid-area: balance;
 }
-.root form {
+.root section {
     padding: 1em;
      margin: 0.2em;
      background-color: burlywood;
      box-shadow: 3px 3px 1px 1px slategray;
  }
- .root form div {
+ .root section form div {
      display: flex;
      flex-direction: column;
  }
@@ -59,6 +59,24 @@
     margin: 0;
     opacity: 1;
     transition: 0s
+  }
+  ul {
+    list-style-type: none;
+    margin: 0.3em 0;
+    padding: 0;
+  }
+  ul li {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0;
+  }
+  ul li p {
+    margin: 0;
+  }
+  .error {
+    color: red;
+    font-weight: bold;
   }
   @media only screen and (max-width: 800px) {
     .root {
