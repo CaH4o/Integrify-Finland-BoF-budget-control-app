@@ -3,7 +3,12 @@ import React, { useState } from "react";
 import { tExpenseProp } from "../types/tExpenseProp";
 import { tExpense } from "../types/tExpense";
 
-function Expense({ expenses, setExpenses, incomesTotal, savings }: tExpenseProp) {
+function Expense({
+  expenses,
+  setExpenses,
+  incomesTotal,
+  savings,
+}: tExpenseProp) {
   const [expenseSource, setExpenseSource] = useState("");
   const [expenseAmount, setExpenseAmount] = useState(0);
   const [expenseDate, setExpenseDate] = useState("");
@@ -15,18 +20,27 @@ function Expense({ expenses, setExpenses, incomesTotal, savings }: tExpenseProp)
       return prev + curr.expenseAmount;
     }, 0);
     if (!expenseSource) {
-      setMessage('Error: The field "Sourse" is empty');
+      setMessage('Error: The field "Source" is empty');
+      setTimeout(function () {
+        setMessage("");
+      }, 3000);
       return;
     }
     if (!expenseAmount) {
       setMessage('Error: The field "Amount" is empty');
+      setTimeout(function () {
+        setMessage("");
+      }, 3000);
       return;
     }
     if (!expenseDate) {
       setMessage('Error: The field "Date" is empty');
+      setTimeout(function () {
+        setMessage("");
+      }, 3000);
       return;
     }
-    if (incomesTotal >= (expansesTotal + expenseAmount + savings)) {
+    if (incomesTotal >= expansesTotal + expenseAmount + savings) {
       const expense: tExpense = {
         id: Date.now().toString(),
         expenseSource,
@@ -36,7 +50,10 @@ function Expense({ expenses, setExpenses, incomesTotal, savings }: tExpenseProp)
       setExpenses([expense, ...expenses]);
       message.length > 0 && setMessage("");
     } else {
-      setMessage("Error: total income less then you have");
+      setMessage("Error: Balance is less then you need");
+      setTimeout(function () {
+        setMessage("");
+      }, 3000);
     }
   }
 
@@ -98,7 +115,7 @@ function Expense({ expenses, setExpenses, incomesTotal, savings }: tExpenseProp)
           <span>
             Total:{" "}
             <b>
-              {expenses.reduce((prev, curr) => prev + curr.expenseAmount, 0)}
+              {expenses.reduce((prev, curr) => prev + curr.expenseAmount, 0)} €
             </b>
           </span>
         </div>

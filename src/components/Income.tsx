@@ -12,15 +12,24 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!incomeSource) {
-      setMessage('Error: The field "Sourse" is empty');
+      setMessage('Error: The field "Source" is empty');
+      setTimeout(function () {
+        setMessage("");
+      }, 3000);
       return;
     }
     if (!incomeAmount) {
       setMessage('Error: The field "Amount" is empty');
+      setTimeout(function () {
+        setMessage("");
+      }, 3000);
       return;
     }
     if (!incomeDate) {
       setMessage('Error: The field "Date" is empty');
+      setTimeout(function () {
+        setMessage("");
+      }, 3000);
       return;
     }
     const income: tIncome = {
@@ -90,7 +99,9 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
           <hr />
           <span>
             Total:{" "}
-            <b>{incomes.reduce((prev, curr) => prev + curr.incomeAmount, 0)}</b>
+            <b>
+              {incomes.reduce((prev, curr) => prev + curr.incomeAmount, 0)} €
+            </b>
           </span>
         </div>
       )}

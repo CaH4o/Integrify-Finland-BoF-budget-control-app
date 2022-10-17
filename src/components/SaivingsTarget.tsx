@@ -28,8 +28,7 @@ function SaivingsTarget({ saving, setSavingsTarget }: tSavingProp) {
             type="number"
             name="setTarget"
             id="setTarget"
-            placeholder="20000"
-            defaultValue="0"
+            placeholder="20000 €"
             min="0"
             onChange={(e) => setTempTarget(Number(e.target.value))}
           />
@@ -37,8 +36,8 @@ function SaivingsTarget({ saving, setSavingsTarget }: tSavingProp) {
         <button type="submit" id="btn_resetTarget">
           Reset
         </button>
-        <p>Current saving: <b>{saving}</b></p>
-        <p>Target: <b>{target}</b></p>
+        <p>Current saving: <b>{saving} €</b></p>
+        <p>Target: <b>{target} €</b></p>
         <label htmlFor="targetProgress">Progress:</label>
         <span> {procent.toFixed(0)}% </span>
         <progress id="targetProgress" value={saving} max={target} />
