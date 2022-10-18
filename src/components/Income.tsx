@@ -4,10 +4,11 @@ import { tIncomeProp } from "../types/tIncomeProp";
 import { tIncome } from "../types/tIncome";
 
 function Income({ incomes, setIncomes }: tIncomeProp) {
-  const [incomeSource, setIncomeSource] = useState("");
-  const [incomeAmount, setIncomeAmount] = useState(0);
-  const [incomeDate, setIncomeDate] = useState("");
-  const [message, setMessage] = useState("");
+
+  const [incomeSource, setIncomeSource] = useState<string>("");
+  const [incomeAmount, setIncomeAmount] = useState<number>(0);
+  const [incomeDate, setIncomeDate] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -38,7 +39,9 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
       incomeAmount,
       incomeDate,
     };
-    message.length > 0 && setMessage("");
+    setIncomeSource("");
+    setIncomeAmount(0);
+    setIncomeDate("");
     setIncomes([income, ...incomes]);
   }
 
@@ -53,6 +56,7 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
             id="incomeSource"
             placeholder="Salary"
             onChange={(e) => setIncomeSource(e.target.value)}
+            value={incomeSource}
           />
         </div>
         <div>
@@ -63,6 +67,7 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
             id="incomeAmount"
             min="0"
             onChange={(e) => setIncomeAmount(Number(e.target.value))}
+            value={incomeAmount}
           />
         </div>
         <div>
@@ -72,6 +77,7 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
             name="incomeDate"
             id="incomeDate"
             onChange={(e) => setIncomeDate(e.target.value)}
+            value={incomeDate}
           />
         </div>
         <button type="submit" id="btn_addIncome">

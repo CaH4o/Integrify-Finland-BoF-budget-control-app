@@ -3,15 +3,15 @@ import React, { useState } from "react";
 import { tBalanceProp } from "../types/tBalanceProp";
 
 function Balance({ balance, savings, setBalance, setSaving }: tBalanceProp) {
-  const [transferAmount, setTransferAmount] = useState(0);
-  const [message, setMessage] = useState("");
+  const [transferAmount, setTransferAmount] = useState<number>(0);
+  const [message, setMessage] = useState<string>("");
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (balance >= transferAmount) {
       setBalance(balance - transferAmount);
       setSaving(savings + transferAmount);
-      setMessage("");
+      setTransferAmount(0);
     } else {
       setMessage("Error: Balance is less than you need");
       setTimeout(function () {
@@ -36,6 +36,7 @@ function Balance({ balance, savings, setBalance, setSaving }: tBalanceProp) {
             placeholder="min 50 €"
             min="50"
             onChange={(e) => setTransferAmount(Number(e.target.value))}
+            value={transferAmount}
           />
         </div>
         <div>

@@ -9,10 +9,10 @@ function Expense({
   incomesTotal,
   savings,
 }: tExpenseProp) {
-  const [expenseSource, setExpenseSource] = useState("");
-  const [expenseAmount, setExpenseAmount] = useState(0);
-  const [expenseDate, setExpenseDate] = useState("");
-  const [message, setMessage] = useState("");
+  const [expenseSource, setExpenseSource] = useState<string>("");
+  const [expenseAmount, setExpenseAmount] = useState<number>(0);
+  const [expenseDate, setExpenseDate] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -47,8 +47,10 @@ function Expense({
         expenseAmount,
         expenseDate,
       };
+      setExpenseSource("");
+      setExpenseAmount(0);
+      setExpenseDate("");
       setExpenses([expense, ...expenses]);
-      message.length > 0 && setMessage("");
     } else {
       setMessage("Error: Balance is less then you need");
       setTimeout(function () {
@@ -68,6 +70,7 @@ function Expense({
             id="expenseSource"
             placeholder="bill of ..."
             onChange={(e) => setExpenseSource(e.target.value)}
+            value={expenseSource}
           />
         </div>
         <div>
@@ -78,6 +81,7 @@ function Expense({
             id="expenseAmount"
             min="0"
             onChange={(e) => setExpenseAmount(Number(e.target.value))}
+            value={expenseAmount}
           />
         </div>
         <div>
@@ -87,6 +91,7 @@ function Expense({
             name="expenseDate"
             id="expenseDate"
             onChange={(e) => setExpenseDate(e.target.value)}
+            value={expenseDate}
           />
         </div>
         <button type="submit" id="btn_addExpense">

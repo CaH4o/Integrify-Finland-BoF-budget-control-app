@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import { tSavingProp } from "../types/tSavingProp";
 
 function SaivingsTarget({ saving, setSavingsTarget }: tSavingProp) {
-  const [target, setTarget] = useState(0);
-  const [tempTarget, setTempTarget] = useState(0);
-  const [procent, setProcent] = useState(0);
+  const [target, setTarget] = useState<number>(0);
+  const [tempTarget, setTempTarget] = useState<number>(0);
+  const [procent, setProcent] = useState<number>(0);
 
   useEffect(
     function () {
@@ -17,6 +17,7 @@ function SaivingsTarget({ saving, setSavingsTarget }: tSavingProp) {
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setTarget(tempTarget);
+    setTempTarget(0);
   }
 
   return (
