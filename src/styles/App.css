@@ -78,6 +78,10 @@
     color: red;
     font-weight: bold;
   }
+  #listExpense, #listIncome {
+    max-height: 250px;
+    overflow-y: auto;
+  }
   @media only screen and (max-width: 800px) {
     .root {
         grid-template-columns: 1fr 1fr;
@@ -95,5 +99,12 @@
         "balance"
         "target" ;
         grid-gap: 0.2em;
+    }
+  }
+  @media only screen and (max-height: 600px) and (min-width: 800px){
+    .root {
+      grid-template-areas: 
+      "income expens target"
+      "income expens balance" ;
     }
   }
