@@ -33,8 +33,7 @@ function App() {
       <ExpenseSection
         expenses={expenses}
         setExpenses={setExpenses}
-        incomesTotal={incomeAmountTotal}
-        savings={savings}
+        balanceAmount={balanceAmount}
       />
       <SaivingsTargetSection saving={savings} setSavingsTarget={setSaivings} />
       <BalanceSection

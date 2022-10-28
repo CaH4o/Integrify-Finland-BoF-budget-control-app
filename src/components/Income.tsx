@@ -4,7 +4,6 @@ import { tIncomeProp } from "../types/tIncomeProp";
 import { tIncome } from "../types/tIncome";
 
 function Income({ incomes, setIncomes }: tIncomeProp) {
-
   const [incomeSource, setIncomeSource] = useState<string>("");
   const [incomeAmount, setIncomeAmount] = useState<number>(0);
   const [incomeDate, setIncomeDate] = useState<string>("");
@@ -39,6 +38,7 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
       incomeAmount,
       incomeDate,
     };
+    e.currentTarget.reset();
     setIncomeSource("");
     setIncomeAmount(0);
     setIncomeDate("");
@@ -55,8 +55,8 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
             name="incomeSource"
             id="incomeSource"
             placeholder="Salary"
-            onChange={(e) => setIncomeSource(e.target.value)}
             value={incomeSource}
+            onChange={(e) => setIncomeSource(e.target.value)}
           />
         </div>
         <div>
@@ -66,8 +66,9 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
             name="incomeAmount"
             id="incomeAmount"
             min="0"
-            onChange={(e) => setIncomeAmount(Number(e.target.value))}
             value={incomeAmount}
+            onChange={(e) => setIncomeAmount(Number(e.target.value))}
+            onFocus={(e) => (e.target.value === "0" && (e.target.value = ""))}
           />
         </div>
         <div>
@@ -76,8 +77,8 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
             type="date"
             name="incomeDate"
             id="incomeDate"
-            onChange={(e) => setIncomeDate(e.target.value)}
             value={incomeDate}
+            onChange={(e) => setIncomeDate(e.target.value)}
           />
         </div>
         <button type="submit" id="btn_addIncome">
@@ -92,7 +93,13 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
                 <strong>Title: {income.incomeSource}</strong>
               </p>
               <p>
-                <span>Amount: {income.incomeAmount}</span>
+                <span>
+                  Amount:{" "}
+                  {new Intl.NumberFormat("fi", {
+                    style: "currency",
+                    currency: "EUR",
+                  }).format(income.incomeAmount)}
+                </span>
               </p>
               <p>
                 <em>Date: {income.incomeDate}</em>
@@ -106,7 +113,12 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
           <span>
             Total:{" "}
             <b>
-              {incomes.reduce((prev, curr) => prev + curr.incomeAmount, 0)} €
+              {new Intl.NumberFormat("fi", {
+                style: "currency",
+                currency: "EUR",
+              }).format(
+                incomes.reduce((prev, curr) => prev + curr.incomeAmount, 0)
+              )}
             </b>
           </span>
         </div>

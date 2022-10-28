@@ -1,6 +1,6 @@
 export interface tBalanceProp {
     balance: number,
     savings: number,
-    setBalance: (value: number)=> void
-    setSaving: (value: number)=> void
+    setBalance: React.Dispatch<React.SetStateAction<number>>
+    setSaving: React.Dispatch<React.SetStateAction<number>>
 }

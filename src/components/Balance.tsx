@@ -4,29 +4,26 @@ import { tBalanceProp } from "../types/tBalanceProp";
 
 function Balance({ balance, savings, setBalance, setSaving }: tBalanceProp) {
   const [transferAmount, setTransferAmount] = useState<number>(0);
-  const [message, setMessage] = useState<string>("");
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (balance >= transferAmount) {
-      setBalance(balance - transferAmount);
-      setSaving(savings + transferAmount);
-      setTransferAmount(0);
-    } else {
-      setMessage("Error: Balance is less than you need");
-      setTimeout(function () {
-        setMessage("");
-      }, 3000);
-    }
+    setBalance(balance - transferAmount);
+    setSaving(savings + transferAmount);
+    setTransferAmount(0);
   }
 
   return (
     <section>
       <form onSubmit={(e) => submit(e)} id="formBalance">
         <p>
-          Current balance: <b>{balance} €</b>
+          Current balance:{" "}
+          <b>
+            {new Intl.NumberFormat("fi", {
+              style: "currency",
+              currency: "EUR",
+            }).format(balance)}
+          </b>
         </p>
-        {message.length > 0 && <span className="error">{message}</span>}
         <div>
           <label htmlFor="transferSavings">Transfer to saving accaunt</label>
           <input
@@ -35,8 +32,9 @@ function Balance({ balance, savings, setBalance, setSaving }: tBalanceProp) {
             id="transferSavings"
             placeholder="min 50 €"
             min="50"
+            max={balance}
+            value={transferAmount.toString().replace(/^0+/,"")}
             onChange={(e) => setTransferAmount(Number(e.target.value))}
-            value={transferAmount}
           />
         </div>
         <div>

@@ -37,8 +37,24 @@ function SaivingsTarget({ saving, setSavingsTarget }: tSavingProp) {
         <button type="submit" id="btn_resetTarget">
           Reset
         </button>
-        <p>Current saving: <b>{saving} €</b></p>
-        <p>Target: <b>{target} €</b></p>
+        <p>
+          Current saving:{" "}
+          <b>
+            {new Intl.NumberFormat("fi", {
+              style: "currency",
+              currency: "EUR",
+            }).format(saving)}
+          </b>
+        </p>
+        <p>
+          Target:{" "}
+          <b>
+            {new Intl.NumberFormat("fi", {
+              style: "currency",
+              currency: "EUR",
+            }).format(target)}
+          </b>
+        </p>
         <label htmlFor="targetProgress">Progress:</label>
         <span> {procent.toFixed(0)}% </span>
         <progress id="targetProgress" value={saving} max={target} />

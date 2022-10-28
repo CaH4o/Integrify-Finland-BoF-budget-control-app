@@ -3,12 +3,7 @@ import React, { useState } from "react";
 import { tExpenseProp } from "../types/tExpenseProp";
 import { tExpense } from "../types/tExpense";
 
-function Expense({
-  expenses,
-  setExpenses,
-  incomesTotal,
-  savings,
-}: tExpenseProp) {
+function Expense({ expenses, setExpenses, balanceAmount }: tExpenseProp) {
   const [expenseSource, setExpenseSource] = useState<string>("");
   const [expenseAmount, setExpenseAmount] = useState<number>(0);
   const [expenseDate, setExpenseDate] = useState<string>("");
@@ -16,9 +11,6 @@ function Expense({
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    let expansesTotal: number = expenses.reduce(function (prev, curr) {
-      return prev + curr.expenseAmount;
-    }, 0);
     if (!expenseSource) {
       setMessage('Error: The field "Source" is empty');
       setTimeout(function () {
@@ -40,7 +32,7 @@ function Expense({
       }, 3000);
       return;
     }
-    if (incomesTotal >= expansesTotal + expenseAmount + savings) {
+    if (balanceAmount >= expenseAmount) {
       const expense: tExpense = {
         id: Date.now().toString(),
         expenseSource,
@@ -69,8 +61,8 @@ function Expense({
             name="expenseSource"
             id="expenseSource"
             placeholder="bill of ..."
-            onChange={(e) => setExpenseSource(e.target.value)}
             value={expenseSource}
+            onChange={(e) => setExpenseSource(e.target.value)}
           />
         </div>
         <div>
@@ -80,8 +72,10 @@ function Expense({
             name="expenseAmount"
             id="expenseAmount"
             min="0"
-            onChange={(e) => setExpenseAmount(Number(e.target.value))}
+            step={0.01}
             value={expenseAmount}
+            onChange={(e) => setExpenseAmount(Number(e.target.value))}
+            onFocus={(e) => (e.target.value === "0" && (e.target.value = ""))}
           />
         </div>
         <div>
@@ -90,8 +84,8 @@ function Expense({
             type="date"
             name="expenseDate"
             id="expenseDate"
-            onChange={(e) => setExpenseDate(e.target.value)}
             value={expenseDate}
+            onChange={(e) => setExpenseDate(e.target.value)}
           />
         </div>
         <button type="submit" id="btn_addExpense">
@@ -106,7 +100,13 @@ function Expense({
                 <strong>Title: {expense.expenseSource}</strong>
               </p>
               <p>
-                <span>Amount: {expense.expenseAmount}</span>
+                <span>
+                  Amount:{" "}
+                  {new Intl.NumberFormat("fi", {
+                    style: "currency",
+                    currency: "EUR",
+                  }).format(expense.expenseAmount)}
+                </span>
               </p>
               <p>
                 <em>Date: {expense.expenseDate}</em>
@@ -120,7 +120,12 @@ function Expense({
           <span>
             Total:{" "}
             <b>
-              {expenses.reduce((prev, curr) => prev + curr.expenseAmount, 0)} €
+              {new Intl.NumberFormat("fi", {
+                style: "currency",
+                currency: "EUR",
+              }).format(
+                expenses.reduce((prev, curr) => prev + curr.expenseAmount, 0)
+              )}
             </b>
           </span>
         </div>

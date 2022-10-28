@@ -2,7 +2,6 @@ import { tExpense } from "./tExpense";
 
 export interface tExpenseProp {
   expenses: tExpense[];
-  setExpenses: (value: tExpense[]) => void;
-  incomesTotal: number;
-  savings: number;
+  setExpenses: React.Dispatch<React.SetStateAction<tExpense[]>> ;
+  balanceAmount: number;
 }
