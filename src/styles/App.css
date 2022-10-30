@@ -1,110 +1,81 @@
 .root {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-areas: 
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas:
     "income expens target"
-    ". balance ." ;
-    grid-gap: 0.3em;
+    ". balance .";
+  grid-gap: 0.3em;
 }
 .root section:nth-child(1) {
-    grid-area: income;
-} 
+  grid-area: income;
+}
 .root section:nth-child(2) {
-    grid-area: expens;
+  grid-area: expens;
 }
 .root section:nth-child(3) {
-    grid-area: target;
+  grid-area: target;
 }
 .root section:nth-child(4) {
-    grid-area: balance;
+  grid-area: balance;
 }
-.root section {
-    padding: 1em;
-     margin: 0.2em;
-     background-color: burlywood;
-     box-shadow: 3px 3px 1px 1px slategray;
- }
- .root section form div {
-     display: flex;
-     flex-direction: column;
- }
- [id*="btn_"] {
-    margin: 0.5em 0;
-    position: relative;
-    border: none;
-    color:black;
-    background-color: bisque;
-    padding: 0.2em;
-    width: 100%;
-    text-align: center;
-    transition-duration: 0.4s;
-    text-decoration: none;
-    overflow: hidden;
-    cursor: pointer;
+
+[id*="form"] {
+  padding: 0.5em;
+  margin: 0.2em;
+  background-color: thistle;
+  box-shadow: 3px 3px 1px 1px slategray;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  margin: 0.2em;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0.3em 0;
+  padding: 0;
+}
+ul li {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0;
+}
+ul li p {
+  margin: 0;
+}
+.error {
+  color: red;
+  font-weight: bold;
+}
+#listExpense,
+#listIncome {
+  max-height: 250px;
+  overflow-y: auto;
+}
+@media only screen and (max-width: 800px) {
+  .root {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "income expens"
+      "target balance";
   }
-  [id*="btn_"]:after {
-    content: "";
-    background: #f1f1f1;
-    display: block;
-    position: absolute;
-    padding-top: 300%;
-    padding-left: 350%;
-    margin-left: -20px !important;
-    margin-top: -120%;
-    opacity: 0;
-    transition: all 0.8s
+}
+@media only screen and (max-width: 500px) {
+  .root {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "income"
+      "expens"
+      "balance"
+      "target";
+    grid-gap: 0.2em;
   }
-  [id*="btn_"]:active:after {
-    padding: 0;
-    margin: 0;
-    opacity: 1;
-    transition: 0s
-  }
-  ul {
-    list-style-type: none;
-    margin: 0.3em 0;
-    padding: 0;
-  }
-  ul li {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 0;
-  }
-  ul li p {
-    margin: 0;
-  }
-  .error {
-    color: red;
-    font-weight: bold;
-  }
-  #listExpense, #listIncome {
-    max-height: 250px;
-    overflow-y: auto;
-  }
-  @media only screen and (max-width: 800px) {
-    .root {
-        grid-template-columns: 1fr 1fr;
-        grid-template-areas: 
-        "income expens"
-        "target balance" ;
-    }
-  }
-  @media only screen and (max-width: 500px) {
-    .root {
-        grid-template-columns: 1fr;
-        grid-template-areas: 
-        "income"
-        "expens"
-        "balance"
-        "target" ;
-        grid-gap: 0.2em;
-    }
-  }
-  @media only screen and (max-height: 600px) and (min-width: 800px){
-    .root {
-      grid-template-areas: 
+}
+@media only screen and (max-height: 600px) and (min-width: 800px) {
+  .root {
+    grid-template-areas:
       "income expens target"
-      "income expens balance" ;
-    }
+      "income expens balance";
   }
+}

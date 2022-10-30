@@ -1,4 +1,16 @@
 import React, { useState } from "react";
+import {
+  Box,
+  OutlinedInput,
+  Button,
+  InputLabel,
+  InputAdornment,
+  FormControl,
+  TextField,
+  List,
+  ListItem,
+} from "@mui/material";
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 import { tExpenseProp } from "../types/tExpenseProp";
 import { tExpense } from "../types/tExpense";
@@ -11,22 +23,8 @@ function Expense({ expenses, setExpenses, balanceAmount }: tExpenseProp) {
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!expenseSource) {
-      setMessage('Error: The field "Source" is empty');
-      setTimeout(function () {
-        setMessage("");
-      }, 3000);
-      return;
-    }
-    if (!expenseAmount) {
-      setMessage('Error: The field "Amount" is empty');
-      setTimeout(function () {
-        setMessage("");
-      }, 3000);
-      return;
-    }
-    if (!expenseDate) {
-      setMessage('Error: The field "Date" is empty');
+    if (expenseAmount <= 0) {
+      setMessage('The amount is incorrect');
       setTimeout(function () {
         setMessage("");
       }, 3000);
@@ -39,9 +37,7 @@ function Expense({ expenses, setExpenses, balanceAmount }: tExpenseProp) {
         expenseAmount,
         expenseDate,
       };
-      setExpenseSource("");
-      setExpenseAmount(0);
-      setExpenseDate("");
+      e.currentTarget.reset();
       setExpenses([expense, ...expenses]);
     } else {
       setMessage("Error: Balance is less then you need");
@@ -52,50 +48,58 @@ function Expense({ expenses, setExpenses, balanceAmount }: tExpenseProp) {
   }
 
   return (
-    <section>
-      <form onSubmit={(e) => submit(e)} id="formExpense">
-        <div>
-          <label htmlFor="expenseSource">Expense source</label>
-          <input
-            type="text"
-            name="expenseSource"
-            id="expenseSource"
-            placeholder="bill of ..."
-            value={expenseSource}
-            onChange={(e) => setExpenseSource(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="expenseAmount">Amount of expense</label>
-          <input
-            type="number"
-            name="expenseAmount"
-            id="expenseAmount"
-            min="0"
-            step={0.01}
-            value={expenseAmount}
-            onChange={(e) => setExpenseAmount(Number(e.target.value))}
-            onFocus={(e) => (e.target.value === "0" && (e.target.value = ""))}
-          />
-        </div>
-        <div>
-          <label htmlFor="expenseDate">Date of expense</label>
-          <input
-            type="date"
-            name="expenseDate"
-            id="expenseDate"
-            value={expenseDate}
-            onChange={(e) => setExpenseDate(e.target.value)}
-          />
-        </div>
-        <button type="submit" id="btn_addExpense">
-          Add expense
-        </button>
-      </form>
-      <ul id="listExpense">
+    <Box
+      component="form"
+      autoComplete="off"
+      onSubmit={(e) => submit(e)}
+      id="formExpense"
+    >
+      <TextField
+        sx={{ m: 1 }}
+        required
+        id="expenseSource"
+        name="expenseSource"
+        label="Expense source"
+        placeholder="bill for ..."
+        //min="0"
+        type="text"
+        onChange={(e) => setExpenseSource(e.target.value)}
+      />
+      <FormControl sx={{ m: 1 }} required>
+        <InputLabel htmlFor="expenseAmount">Amount of expense</InputLabel>
+        <OutlinedInput
+          label="Amount of expense"
+          type="number"
+          id="expenseAmount"
+          onChange={(e) => setExpenseAmount(Number(e.target.value))}
+          startAdornment={<InputAdornment position="start">€</InputAdornment>}
+        />
+      </FormControl>
+      <TextField
+        sx={{ m: 1 }}
+        required
+        id="expenseDate"
+        name="expenseDate"
+        label="Date of expense"
+        type="date"
+        onChange={(e) => setExpenseDate(e.target.value)}
+        InputLabelProps={{ shrink: true }}
+      />
+      <Button
+        sx={{ m: 1 }}
+        type="submit"
+        id="btn_addExpense"
+        variant="contained"
+        color="secondary"
+        endIcon={<RemoveCircleOutlineIcon />}
+      >
+        Add expense
+      </Button>
+
+      <List id="listExpense">
         {expenses.length > 0 &&
           expenses.map((expense) => (
-            <li key={expense.id}>
+            <ListItem key={expense.id}>
               <p>
                 <strong>Title: {expense.expenseSource}</strong>
               </p>
@@ -111,9 +115,9 @@ function Expense({ expenses, setExpenses, balanceAmount }: tExpenseProp) {
               <p>
                 <em>Date: {expense.expenseDate}</em>
               </p>
-            </li>
+            </ListItem>
           ))}
-      </ul>
+      </List>
       {expenses.length > 0 && (
         <div>
           <hr />
@@ -131,7 +135,7 @@ function Expense({ expenses, setExpenses, balanceAmount }: tExpenseProp) {
         </div>
       )}
       {message.length > 0 && <span className="error">{message}</span>}
-    </section>
+    </Box>
   );
 }
 

@@ -1,4 +1,13 @@
 import React, { useEffect, useState } from "react";
+import {
+  Box,
+  OutlinedInput,
+  Button,
+  InputLabel,
+  InputAdornment,
+  FormControl,
+} from "@mui/material";
+import AdjustIcon from "@mui/icons-material/Adjust";
 
 import { tSavingProp } from "../types/tSavingProp";
 
@@ -18,48 +27,59 @@ function SaivingsTarget({ saving, setSavingsTarget }: tSavingProp) {
     e.preventDefault();
     setTarget(tempTarget);
     setTempTarget(0);
+    e.currentTarget.reset();
   }
 
   return (
-    <section>
-      <form onSubmit={(e) => submit(e)} id="formTarget">
-        <div>
-          <label htmlFor="setTarget">Set target</label>
-          <input
-            type="number"
-            name="setTarget"
-            id="setTarget"
-            placeholder="20000 €"
-            min="0"
-            onChange={(e) => setTempTarget(Number(e.target.value))}
-          />
-        </div>
-        <button type="submit" id="btn_resetTarget">
-          Reset
-        </button>
-        <p>
-          Current saving:{" "}
-          <b>
-            {new Intl.NumberFormat("fi", {
-              style: "currency",
-              currency: "EUR",
-            }).format(saving)}
-          </b>
-        </p>
-        <p>
-          Target:{" "}
-          <b>
-            {new Intl.NumberFormat("fi", {
-              style: "currency",
-              currency: "EUR",
-            }).format(target)}
-          </b>
-        </p>
-        <label htmlFor="targetProgress">Progress:</label>
-        <span> {procent.toFixed(0)}% </span>
-        <progress id="targetProgress" value={saving} max={target} />
-      </form>
-    </section>
+    <Box
+      component="form"
+      autoComplete="off"
+      onSubmit={(e) => submit(e)}
+      id="formTarget"
+    >
+      <FormControl sx={{ m: 1 }} required>
+        <InputLabel htmlFor="setTarget">Set target</InputLabel>
+        <OutlinedInput
+          label="Set target"
+          type="number"
+          id="setTarget"
+          placeholder="20000"
+          //min="0"
+          onChange={(e) => setTempTarget(Number(e.target.value))}
+          startAdornment={<InputAdornment position="start">€</InputAdornment>}
+        />
+      </FormControl>
+      <Button
+        sx={{ m: 1 }}
+        type="submit"
+        id="btn_resetTarget"
+        variant="contained"
+        endIcon={<AdjustIcon />}
+      >
+        Set target
+      </Button>
+      <p>
+        Current saving:{" "}
+        <b>
+          {new Intl.NumberFormat("fi", {
+            style: "currency",
+            currency: "EUR",
+          }).format(saving)}
+        </b>
+      </p>
+      <p>
+        Target:{" "}
+        <b>
+          {new Intl.NumberFormat("fi", {
+            style: "currency",
+            currency: "EUR",
+          }).format(target)}
+        </b>
+      </p>
+      <label htmlFor="targetProgress">Progress:</label>
+      <span> {procent.toFixed(0)}% </span>
+      <progress id="targetProgress" value={saving} max={target} />
+    </Box>
   );
 }
 

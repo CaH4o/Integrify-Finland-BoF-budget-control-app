@@ -1,4 +1,16 @@
 import React, { useState } from "react";
+import {
+  Box,
+  OutlinedInput,
+  Button,
+  InputLabel,
+  InputAdornment,
+  FormControl,
+  TextField,
+  List,
+  ListItem,
+} from "@mui/material";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 import { tIncomeProp } from "../types/tIncomeProp";
 import { tIncome } from "../types/tIncome";
@@ -11,22 +23,8 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!incomeSource) {
-      setMessage('Error: The field "Source" is empty');
-      setTimeout(function () {
-        setMessage("");
-      }, 3000);
-      return;
-    }
-    if (!incomeAmount) {
-      setMessage('Error: The field "Amount" is empty');
-      setTimeout(function () {
-        setMessage("");
-      }, 3000);
-      return;
-    }
-    if (!incomeDate) {
-      setMessage('Error: The field "Date" is empty');
+    if (incomeAmount <= 0) {
+      setMessage("Error: The amount is incorrect");
       setTimeout(function () {
         setMessage("");
       }, 3000);
@@ -39,56 +37,61 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
       incomeDate,
     };
     e.currentTarget.reset();
-    setIncomeSource("");
-    setIncomeAmount(0);
-    setIncomeDate("");
     setIncomes([income, ...incomes]);
   }
 
   return (
-    <section>
-      <form onSubmit={(e) => submit(e)} id="formIncome">
-        <div>
-          <label htmlFor="incomeSource">Income source</label>
-          <input
-            type="text"
-            name="incomeSource"
-            id="incomeSource"
-            placeholder="Salary"
-            value={incomeSource}
-            onChange={(e) => setIncomeSource(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="incomeAmount">Amount of income</label>
-          <input
-            type="number"
-            name="incomeAmount"
-            id="incomeAmount"
-            min="0"
-            value={incomeAmount}
-            onChange={(e) => setIncomeAmount(Number(e.target.value))}
-            onFocus={(e) => (e.target.value === "0" && (e.target.value = ""))}
-          />
-        </div>
-        <div>
-          <label htmlFor="incomeDate">Date of income</label>
-          <input
-            type="date"
-            name="incomeDate"
-            id="incomeDate"
-            value={incomeDate}
-            onChange={(e) => setIncomeDate(e.target.value)}
-          />
-        </div>
-        <button type="submit" id="btn_addIncome">
-          Add income
-        </button>
-      </form>
-      <ul id="listIncome">
+    <Box
+      component="form"
+      autoComplete="off"
+      onSubmit={(e) => submit(e)}
+      id="formIncome"
+      
+    >
+      <TextField
+        sx={{ m: 1 }}
+        required
+        id="incomeSource"
+        name="incomeSource"
+        label="Income source"
+        placeholder="Salary"
+        type="text"
+        onChange={(e) => setIncomeSource(e.target.value)}
+      />
+      <FormControl sx={{ m: 1 }} required>
+        <InputLabel htmlFor="incomeAmount">Amount of income</InputLabel>
+        <OutlinedInput
+          label="Amount of income"
+          type="number"
+          id="incomeAmount"
+          //min="0"
+          onChange={(e) => setIncomeAmount(Number(e.target.value))}
+          startAdornment={<InputAdornment position="start">€</InputAdornment>}
+        />
+      </FormControl>
+      <TextField
+        sx={{ m: 1 }}
+        required
+        id="incomeDate"
+        name="incomeDate"
+        label="Date of income"
+        type="date"
+        onChange={(e) => setIncomeDate(e.target.value)}
+        InputLabelProps={{ shrink: true }}
+      />
+      <Button
+        sx={{ m: 1 }}
+        type="submit"
+        id="btn_addIncome"
+        variant="contained"
+        endIcon={<AddCircleOutlineIcon />}
+      >
+        Add income
+      </Button>
+      <List id="listIncome">
         {incomes.length > 0 &&
           incomes.map((income) => (
-            <li key={income.id}>
+            <ListItem key={income.id}>
               <p>
                 <strong>Title: {income.incomeSource}</strong>
               </p>
@@ -104,9 +107,9 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
               <p>
                 <em>Date: {income.incomeDate}</em>
               </p>
-            </li>
+            </ListItem>
           ))}
-      </ul>
+      </List>
       {incomes.length > 0 && (
         <div>
           <hr />
@@ -124,7 +127,7 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
         </div>
       )}
       {message.length > 0 && <span className="error">{message}</span>}
-    </section>
+    </Box>
   );
 }
 

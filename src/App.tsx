@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import "./App.css";
 import "./styles/App.css";
@@ -26,22 +27,43 @@ function App() {
     },
     [incomes, expenses, savings, expansesAmountTotal, incomeAmountTotal]
   );
+  const theme = createTheme({
+    palette: {
+      primary: {
+        light: '#757ce8',
+        main: '#3f50b5',
+        dark: '#002884',
+        contrastText: '#fff',
+      },
+      secondary: {
+        light: '#ff7961',
+        main: '#f44336',
+        dark: '#ba000d',
+        contrastText: '#000',
+      },
+    },
+  });
 
   return (
     <div className="root">
-      <IncomeSection incomes={incomes} setIncomes={setIncomes} />
-      <ExpenseSection
-        expenses={expenses}
-        setExpenses={setExpenses}
-        balanceAmount={balanceAmount}
-      />
-      <SaivingsTargetSection saving={savings} setSavingsTarget={setSaivings} />
-      <BalanceSection
-        balance={balanceAmount}
-        savings={savings}
-        setBalance={setBalances}
-        setSaving={setSaivings}
-      />
+      <ThemeProvider theme={theme}>
+        <IncomeSection incomes={incomes} setIncomes={setIncomes} />
+        <ExpenseSection
+          expenses={expenses}
+          setExpenses={setExpenses}
+          balanceAmount={balanceAmount}
+        />
+        <SaivingsTargetSection
+          saving={savings}
+          setSavingsTarget={setSaivings}
+        />
+        <BalanceSection
+          balance={balanceAmount}
+          savings={savings}
+          setBalance={setBalances}
+          setSaving={setSaivings}
+        />
+      </ThemeProvider>
     </div>
   );
 }
