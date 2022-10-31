@@ -1,11 +1,13 @@
-import React from "react";
-import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
+import React, { useContext } from "react";
+import { AppBar, Toolbar, Typography, IconButton, useTheme} from "@mui/material";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import { ThemeContext } from "../App";
 
-import { pNav } from "../types/pNav";
+function Nav() {
+  const themeMode = useTheme();
+  const colorMode = useContext(ThemeContext);
 
-function Nav({ mode, setMode }: pNav) {
   return (
     <AppBar position="static">
       <Toolbar variant="dense">
@@ -13,9 +15,9 @@ function Nav({ mode, setMode }: pNav) {
           edge="start"
           color="inherit"
           sx={{ mr: 2 }}
-          onClick={() => setMode(mode === "light" ? "dark" : "light")}
+          onClick={() => colorMode.toggleMode()}
         >
-          {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
+          {themeMode.palette.mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
         </IconButton>
         <Typography variant="h6" color="inherit" component="div">
           Budget control app

@@ -6,6 +6,7 @@ import {
   InputLabel,
   InputAdornment,
   FormControl,
+  Typography
 } from "@mui/material";
 import SavingsIcon from '@mui/icons-material/Savings';
 
@@ -45,7 +46,7 @@ function Balance({ balance, savings, setBalance, setSaving }: pBalance) {
         id="formBalance"
         sx={{ bgcolor:"background.default" }}
       >
-        <p>
+        <Typography color='textPrimary' className="textCenter">
           Current balance:{" "}
           <b>
             {new Intl.NumberFormat("fi", {
@@ -53,7 +54,7 @@ function Balance({ balance, savings, setBalance, setSaving }: pBalance) {
               currency: "EUR",
             }).format(balance)}
           </b>
-        </p>
+        </Typography>
         
         <FormControl sx={{ m: 1 }} required>
         <InputLabel htmlFor="transferSavings">Transfer to saving accaunt</InputLabel>

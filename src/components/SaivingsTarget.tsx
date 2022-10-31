@@ -6,6 +6,7 @@ import {
   InputLabel,
   InputAdornment,
   FormControl,
+  Typography,
 } from "@mui/material";
 import AdjustIcon from "@mui/icons-material/Adjust";
 
@@ -36,7 +37,7 @@ function SaivingsTarget({ saving, setSavingsTarget }: pSaving) {
       autoComplete="off"
       onSubmit={(e) => submit(e)}
       id="formTarget"
-      sx={{ bgcolor:"background.default" }}
+      sx={{ bgcolor: "background.default" }}
     >
       <FormControl sx={{ m: 1 }} required>
         <InputLabel htmlFor="setTarget">Set target</InputLabel>
@@ -59,7 +60,7 @@ function SaivingsTarget({ saving, setSavingsTarget }: pSaving) {
       >
         Set target
       </Button>
-      <p>
+      <Typography color="textPrimary" className="textCenter">
         Current saving:{" "}
         <b>
           {new Intl.NumberFormat("fi", {
@@ -67,8 +68,8 @@ function SaivingsTarget({ saving, setSavingsTarget }: pSaving) {
             currency: "EUR",
           }).format(saving)}
         </b>
-      </p>
-      <p>
+      </Typography>
+      <Typography color="textPrimary" className="textCenter">
         Target:{" "}
         <b>
           {new Intl.NumberFormat("fi", {
@@ -76,10 +77,12 @@ function SaivingsTarget({ saving, setSavingsTarget }: pSaving) {
             currency: "EUR",
           }).format(target)}
         </b>
-      </p>
-      <label htmlFor="targetProgress">Progress:</label>
-      <span> {procent.toFixed(0)}% </span>
-      <progress id="targetProgress" value={saving} max={target} />
+      </Typography>
+      <Typography color="textPrimary" className="textCenter">
+        <label htmlFor="targetProgress">Progress:</label>
+        <span> {procent.toFixed(0)}% </span>
+        <progress id="targetProgress" value={saving} max={target} />
+      </Typography>
     </Box>
   );
 }

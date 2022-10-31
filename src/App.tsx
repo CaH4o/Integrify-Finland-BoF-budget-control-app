@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import "./styles/App.css";
@@ -9,13 +9,26 @@ import SaivingsTargetSection from "./components/SaivingsTarget";
 import BalanceSection from "./components/Balance";
 import { tIncome } from "./types/tIncome";
 import { tExpense } from "./types/tExpense";
+import { tContext } from "./types/tContext";
+
+export const ThemeContext = createContext<tContext>({
+  toggleMode: () => {},
+  incomes: [],
+  expenses: [],
+  savings: 0,
+  balance: 0,
+  setIncomes: () => {},
+  setExpenses: () => {},
+  setSaivings: () => {},
+  setBalance: () => {},
+});
 
 function App() {
   const [mode, setMode] = useState<"light" | "dark">("light");
   const [incomes, setIncomes] = useState<tIncome[]>([]);
   const [expenses, setExpenses] = useState<tExpense[]>([]);
   const [savings, setSaivings] = useState<number>(0);
-  const [balanceAmount, setBalances] = useState<number>(0);
+  const [balance, setBalance] = useState<number>(0);
   const incomeAmountTotal = incomes.reduce(function (prev, curr) {
     return prev + curr.incomeAmount;
   }, 0);
@@ -24,10 +37,11 @@ function App() {
   }, 0);
   useEffect(
     function () {
-      setBalances(incomeAmountTotal - expansesAmountTotal - savings);
+      setBalance(incomeAmountTotal - expansesAmountTotal - savings);
     },
     [incomes, expenses, savings, expansesAmountTotal, incomeAmountTotal]
   );
+
   const theme = createTheme({
     palette: {
       mode,
@@ -55,29 +69,45 @@ function App() {
     },
   });
 
+  const manageTheme = {
+    toggleMode: function () {
+      setMode((mode) => (mode === "light" ? "dark" : "light"));
+    },
+    incomes,
+    expenses,
+    savings,
+    balance,
+    setIncomes,
+    setExpenses,
+    setSaivings,
+    setBalance,
+  };
+
   return (
     <div className="root">
-      <ThemeProvider theme={theme}>
-        <Nav mode={mode} setMode={setMode} />
-        <div className="main">
-          <IncomeSection incomes={incomes} setIncomes={setIncomes} />
-          <ExpenseSection
-            expenses={expenses}
-            setExpenses={setExpenses}
-            balanceAmount={balanceAmount}
-          />
-          <SaivingsTargetSection
-            saving={savings}
-            setSavingsTarget={setSaivings}
-          />
-          <BalanceSection
-            balance={balanceAmount}
-            savings={savings}
-            setBalance={setBalances}
-            setSaving={setSaivings}
-          />
-        </div>
-      </ThemeProvider>
+      <ThemeContext.Provider value={manageTheme}>
+        <ThemeProvider theme={theme}>
+          <Nav />
+          <div className="main">
+            <IncomeSection incomes={incomes} setIncomes={setIncomes} />
+            <ExpenseSection
+              expenses={expenses}
+              setExpenses={setExpenses}
+              balanceAmount={balance}
+            />
+            <SaivingsTargetSection
+              saving={savings}
+              setSavingsTarget={setSaivings}
+            />
+            <BalanceSection
+              balance={balance}
+              savings={savings}
+              setBalance={setBalance}
+              setSaving={setSaivings}
+            />
+          </div>
+        </ThemeProvider>
+      </ThemeContext.Provider>
     </div>
   );
 }

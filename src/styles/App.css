@@ -1,5 +1,5 @@
 .root {
-  height : '100vh';
+  height : 100%;
   background-color: #9d67db;
 }
 
@@ -34,6 +34,11 @@
   gap: 1px;
   margin: 0.2em;
 }
+
+.textCenter {
+  text-align: center;
+  padding: 0.3rem;
+ }
 
 ul {
   list-style-type: none;
