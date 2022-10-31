@@ -1,6 +1,6 @@
 import { tIncome } from "./tIncome";
 
-export interface tIncomeProp {
+export interface pIncome {
     incomes: tIncome[],
     setIncomes: React.Dispatch<React.SetStateAction<tIncome[]>>
 }

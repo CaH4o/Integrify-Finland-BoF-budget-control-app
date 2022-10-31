@@ -9,9 +9,9 @@ import {
 } from "@mui/material";
 import SavingsIcon from '@mui/icons-material/Savings';
 
-import { tBalanceProp } from "../types/tBalanceProp";
+import { pBalance } from "../types/pBalance";
 
-function Balance({ balance, savings, setBalance, setSaving }: tBalanceProp) {
+function Balance({ balance, savings, setBalance, setSaving }: pBalance) {
   const [transferAmount, setTransferAmount] = useState<number>(0);
   const [message, setMessage] = useState<string>("");
 
@@ -43,6 +43,7 @@ function Balance({ balance, savings, setBalance, setSaving }: tBalanceProp) {
         autoComplete="off"
         onSubmit={(e) => submit(e)}
         id="formBalance"
+        sx={{ bgcolor:"background.default" }}
       >
         <p>
           Current balance:{" "}

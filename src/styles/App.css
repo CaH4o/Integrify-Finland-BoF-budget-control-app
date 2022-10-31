@@ -1,4 +1,9 @@
 .root {
+  height : '100vh';
+  background-color: #9d67db;
+}
+
+.main {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-areas:
@@ -6,23 +11,23 @@
     ". balance .";
   grid-gap: 0.3em;
 }
-.root section:nth-child(1) {
+.main section:nth-child(1) {
   grid-area: income;
 }
-.root section:nth-child(2) {
+.main section:nth-child(2) {
   grid-area: expens;
 }
-.root section:nth-child(3) {
+.main section:nth-child(3) {
   grid-area: target;
 }
-.root section:nth-child(4) {
+.main section:nth-child(4) {
   grid-area: balance;
 }
 
 [id*="form"] {
   padding: 0.5em;
   margin: 0.2em;
-  background-color: thistle;
+  border-color: thistle;
   box-shadow: 3px 3px 1px 1px slategray;
   display: flex;
   flex-direction: column;
@@ -54,7 +59,7 @@ ul li p {
   overflow-y: auto;
 }
 @media only screen and (max-width: 800px) {
-  .root {
+  .main {
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
       "income expens"
@@ -62,7 +67,7 @@ ul li p {
   }
 }
 @media only screen and (max-width: 500px) {
-  .root {
+  .main {
     grid-template-columns: 1fr;
     grid-template-areas:
       "income"
@@ -73,7 +78,7 @@ ul li p {
   }
 }
 @media only screen and (max-height: 600px) and (min-width: 800px) {
-  .root {
+  .main {
     grid-template-areas:
       "income expens target"
       "income expens balance";

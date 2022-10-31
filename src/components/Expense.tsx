@@ -12,10 +12,10 @@ import {
 } from "@mui/material";
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
-import { tExpenseProp } from "../types/tExpenseProp";
+import { pExpense } from "../types/pExpense";
 import { tExpense } from "../types/tExpense";
 
-function Expense({ expenses, setExpenses, balanceAmount }: tExpenseProp) {
+function Expense({ expenses, setExpenses, balanceAmount }: pExpense) {
   const [expenseSource, setExpenseSource] = useState<string>("");
   const [expenseAmount, setExpenseAmount] = useState<number>(0);
   const [expenseDate, setExpenseDate] = useState<string>("");
@@ -53,6 +53,7 @@ function Expense({ expenses, setExpenses, balanceAmount }: tExpenseProp) {
       autoComplete="off"
       onSubmit={(e) => submit(e)}
       id="formExpense"
+      sx={{ bgcolor:"background.default" }}
     >
       <TextField
         sx={{ m: 1 }}

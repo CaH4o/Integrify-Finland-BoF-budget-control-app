@@ -9,9 +9,9 @@ import {
 } from "@mui/material";
 import AdjustIcon from "@mui/icons-material/Adjust";
 
-import { tSavingProp } from "../types/tSavingProp";
+import { pSaving } from "../types/pSaving";
 
-function SaivingsTarget({ saving, setSavingsTarget }: tSavingProp) {
+function SaivingsTarget({ saving, setSavingsTarget }: pSaving) {
   const [target, setTarget] = useState<number>(0);
   const [tempTarget, setTempTarget] = useState<number>(0);
   const [procent, setProcent] = useState<number>(0);
@@ -36,6 +36,7 @@ function SaivingsTarget({ saving, setSavingsTarget }: tSavingProp) {
       autoComplete="off"
       onSubmit={(e) => submit(e)}
       id="formTarget"
+      sx={{ bgcolor:"background.default" }}
     >
       <FormControl sx={{ m: 1 }} required>
         <InputLabel htmlFor="setTarget">Set target</InputLabel>

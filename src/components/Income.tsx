@@ -12,10 +12,10 @@ import {
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
-import { tIncomeProp } from "../types/tIncomeProp";
+import { pIncome } from "../types/pIncome";
 import { tIncome } from "../types/tIncome";
 
-function Income({ incomes, setIncomes }: tIncomeProp) {
+function Income({ incomes, setIncomes }: pIncome) {
   const [incomeSource, setIncomeSource] = useState<string>("");
   const [incomeAmount, setIncomeAmount] = useState<number>(0);
   const [incomeDate, setIncomeDate] = useState<string>("");
@@ -46,7 +46,7 @@ function Income({ incomes, setIncomes }: tIncomeProp) {
       autoComplete="off"
       onSubmit={(e) => submit(e)}
       id="formIncome"
-      
+      sx={{ bgcolor:"background.default" }}
     >
       <TextField
         sx={{ m: 1 }}
