@@ -10,10 +10,12 @@ import {
   List,
   ListItem,
 } from "@mui/material";
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
 import { tExpense } from "../types/tExpense";
 import { ThemeContext } from "../App";
+import ExpenseTable from "./ExpenseTable";
+import ExpenseTotal from "./ExpenseTotal";
 
 function Expense() {
   const manageData = useContext(ThemeContext);
@@ -25,7 +27,7 @@ function Expense() {
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (expenseAmount <= 0) {
-      setMessage('The amount is incorrect');
+      setMessage("The amount is incorrect");
       setTimeout(function () {
         setMessage("");
       }, 3000);
@@ -54,7 +56,7 @@ function Expense() {
       autoComplete="off"
       onSubmit={(e) => submit(e)}
       id="formExpense"
-      sx={{ bgcolor:"background.default" }}
+      sx={{ bgcolor: "background.default" }}
     >
       <TextField
         sx={{ m: 1 }}
@@ -96,45 +98,9 @@ function Expense() {
       >
         Add expense
       </Button>
+      <ExpenseTotal />
+      <ExpenseTable />
 
-      <List id="listExpense">
-        {manageData.expenses.length > 0 &&
-          manageData.expenses.map((expense) => (
-            <ListItem key={expense.id}>
-              <p>
-                <strong>Title: {expense.expenseSource}</strong>
-              </p>
-              <p>
-                <span>
-                  Amount:{" "}
-                  {new Intl.NumberFormat("fi", {
-                    style: "currency",
-                    currency: "EUR",
-                  }).format(expense.expenseAmount)}
-                </span>
-              </p>
-              <p>
-                <em>Date: {expense.expenseDate}</em>
-              </p>
-            </ListItem>
-          ))}
-      </List>
-      {manageData.expenses.length > 0 && (
-        <div>
-          <hr />
-          <span>
-            Total:{" "}
-            <b>
-              {new Intl.NumberFormat("fi", {
-                style: "currency",
-                currency: "EUR",
-              }).format(
-                manageData.expenses.reduce((prev, curr) => prev + curr.expenseAmount, 0)
-              )}
-            </b>
-          </span>
-        </div>
-      )}
       {message.length > 0 && <span className="error">{message}</span>}
     </Box>
   );

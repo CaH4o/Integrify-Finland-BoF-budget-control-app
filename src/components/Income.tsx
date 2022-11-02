@@ -14,6 +14,8 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
 import { ThemeContext } from "../App";
 import { tIncome } from "../types/tIncome";
+import IncomeTable from "./IncomeTable";
+import IncomeTotal from "./IncomeTotal";
 
 function Income() {
   const manageData = useContext(ThemeContext);
@@ -37,7 +39,7 @@ function Income() {
       incomeAmount,
       incomeDate,
     };
-    e.currentTarget.reset();
+    //e.currentTarget.reset();
     manageData.setIncomes([income, ...manageData.incomes]);
   }
 
@@ -52,8 +54,6 @@ function Income() {
       <TextField
         sx={{ m: 1 }}
         required
-        id="incomeSource"
-        name="incomeSource"
         label="Income source"
         placeholder="Salary"
         type="text"
@@ -65,7 +65,6 @@ function Income() {
           label="Amount of income"
           type="number"
           id="incomeAmount"
-          //min="0"
           onChange={(e) => setIncomeAmount(Number(e.target.value))}
           startAdornment={<InputAdornment position="start">€</InputAdornment>}
         />
@@ -73,8 +72,6 @@ function Income() {
       <TextField
         sx={{ m: 1 }}
         required
-        id="incomeDate"
-        name="incomeDate"
         label="Date of income"
         type="date"
         onChange={(e) => setIncomeDate(e.target.value)}
@@ -89,44 +86,8 @@ function Income() {
       >
         Add income
       </Button>
-      <List id="listIncome">
-        {manageData.incomes.length > 0 &&
-          manageData.incomes.map((income) => (
-            <ListItem key={income.id}>
-              <p>
-                <strong>Title: {income.incomeSource}</strong>
-              </p>
-              <p>
-                <span>
-                  Amount:{" "}
-                  {new Intl.NumberFormat("fi", {
-                    style: "currency",
-                    currency: "EUR",
-                  }).format(income.incomeAmount)}
-                </span>
-              </p>
-              <p>
-                <em>Date: {income.incomeDate}</em>
-              </p>
-            </ListItem>
-          ))}
-      </List>
-      {manageData.incomes.length > 0 && (
-        <div>
-          <hr />
-          <span>
-            Total:{" "}
-            <b>
-              {new Intl.NumberFormat("fi", {
-                style: "currency",
-                currency: "EUR",
-              }).format(
-                manageData.incomes.reduce((prev, curr) => prev + curr.incomeAmount, 0)
-              )}
-            </b>
-          </span>
-        </div>
-      )}
+      <IncomeTotal />
+      <IncomeTable />
       {message.length > 0 && <span className="error">{message}</span>}
     </Box>
   );
