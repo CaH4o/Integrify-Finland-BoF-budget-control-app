@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Box,
   OutlinedInput,
@@ -6,16 +6,19 @@ import {
   InputLabel,
   InputAdornment,
   FormControl,
-  Typography
+  Typography,
 } from "@mui/material";
-import SavingsIcon from '@mui/icons-material/Savings';
+import SavingsIcon from "@mui/icons-material/Savings";
 
-import { pBalance } from "../types/pBalance";
+import { ThemeContext } from "../App";
 
-function Balance({ balance, savings, setBalance, setSaving }: pBalance) {
+
+
+function Balance() {
   const [transferAmount, setTransferAmount] = useState<number>(0);
   const [message, setMessage] = useState<string>("");
-
+  const manageData = useContext(ThemeContext);
+  
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (transferAmount < 50) {
@@ -25,39 +28,41 @@ function Balance({ balance, savings, setBalance, setSaving }: pBalance) {
       }, 3000);
       return;
     }
-    if (transferAmount > balance) {
+    if (transferAmount > manageData.balance) {
       setMessage("Error: Balance is less then you need");
       setTimeout(function () {
         setMessage("");
       }, 3000);
       return;
     } else {
-      setBalance(balance - transferAmount);
-      setSaving(savings + transferAmount);  
+      manageData.setBalance(manageData.balance - transferAmount);
+      manageData.setSaivings(manageData.savings + transferAmount);
     }
     e.currentTarget.reset();
   }
 
   return (
-      <Box
-        component="form"
-        autoComplete="off"
-        onSubmit={(e) => submit(e)}
-        id="formBalance"
-        sx={{ bgcolor:"background.default" }}
-      >
-        <Typography color='textPrimary' className="textCenter">
-          Current balance:{" "}
-          <b>
-            {new Intl.NumberFormat("fi", {
-              style: "currency",
-              currency: "EUR",
-            }).format(balance)}
-          </b>
-        </Typography>
-        
-        <FormControl sx={{ m: 1 }} required>
-        <InputLabel htmlFor="transferSavings">Transfer to saving accaunt</InputLabel>
+    <Box
+      component="form"
+      autoComplete="off"
+      onSubmit={(e) => submit(e)}
+      id="formBalance"
+      sx={{ bgcolor: "background.default" }}
+    >
+      <Typography color="textPrimary" className="textCenter">
+        Current balance:{" "}
+        <b>
+          {new Intl.NumberFormat("fi", {
+            style: "currency",
+            currency: "EUR",
+          }).format(manageData.balance)}
+        </b>
+      </Typography>
+
+      <FormControl sx={{ m: 1 }} required>
+        <InputLabel htmlFor="transferSavings">
+          Transfer to saving accaunt
+        </InputLabel>
         <OutlinedInput
           label="Transfer to saving accaunt"
           type="number"
@@ -79,7 +84,7 @@ function Balance({ balance, savings, setBalance, setSaving }: pBalance) {
         Transfer
       </Button>
       {message.length > 0 && <span className="error">{message}</span>}
-      </Box>
+    </Box>
   );
 }
 

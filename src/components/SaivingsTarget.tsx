@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Box,
   OutlinedInput,
@@ -10,18 +10,19 @@ import {
 } from "@mui/material";
 import AdjustIcon from "@mui/icons-material/Adjust";
 
-import { pSaving } from "../types/pSaving";
+import { ThemeContext } from "../App";
 
-function SaivingsTarget({ saving, setSavingsTarget }: pSaving) {
+function SaivingsTarget() {
+  const manageData = useContext(ThemeContext);
   const [target, setTarget] = useState<number>(0);
   const [tempTarget, setTempTarget] = useState<number>(0);
   const [procent, setProcent] = useState<number>(0);
 
   useEffect(
     function () {
-      setProcent(target && saving ? (saving / target) * 100 : 0);
+      setProcent(target && manageData.savings ? (manageData.savings / target) * 100 : 0);
     },
-    [target, saving, procent]
+    [target, manageData.savings, procent]
   );
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
@@ -66,7 +67,7 @@ function SaivingsTarget({ saving, setSavingsTarget }: pSaving) {
           {new Intl.NumberFormat("fi", {
             style: "currency",
             currency: "EUR",
-          }).format(saving)}
+          }).format(manageData.savings)}
         </b>
       </Typography>
       <Typography color="textPrimary" className="textCenter">
@@ -81,7 +82,7 @@ function SaivingsTarget({ saving, setSavingsTarget }: pSaving) {
       <Typography color="textPrimary" className="textCenter">
         <label htmlFor="targetProgress">Progress:</label>
         <span> {procent.toFixed(0)}% </span>
-        <progress id="targetProgress" value={saving} max={target} />
+        <progress id="targetProgress" value={manageData.savings} max={target} />
       </Typography>
     </Box>
   );

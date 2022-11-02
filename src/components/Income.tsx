@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Box,
   OutlinedInput,
@@ -12,10 +12,11 @@ import {
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
-import { pIncome } from "../types/pIncome";
+import { ThemeContext } from "../App";
 import { tIncome } from "../types/tIncome";
 
-function Income({ incomes, setIncomes }: pIncome) {
+function Income() {
+  const manageData = useContext(ThemeContext);
   const [incomeSource, setIncomeSource] = useState<string>("");
   const [incomeAmount, setIncomeAmount] = useState<number>(0);
   const [incomeDate, setIncomeDate] = useState<string>("");
@@ -37,7 +38,7 @@ function Income({ incomes, setIncomes }: pIncome) {
       incomeDate,
     };
     e.currentTarget.reset();
-    setIncomes([income, ...incomes]);
+    manageData.setIncomes([income, ...manageData.incomes]);
   }
 
   return (
@@ -89,8 +90,8 @@ function Income({ incomes, setIncomes }: pIncome) {
         Add income
       </Button>
       <List id="listIncome">
-        {incomes.length > 0 &&
-          incomes.map((income) => (
+        {manageData.incomes.length > 0 &&
+          manageData.incomes.map((income) => (
             <ListItem key={income.id}>
               <p>
                 <strong>Title: {income.incomeSource}</strong>
@@ -110,7 +111,7 @@ function Income({ incomes, setIncomes }: pIncome) {
             </ListItem>
           ))}
       </List>
-      {incomes.length > 0 && (
+      {manageData.incomes.length > 0 && (
         <div>
           <hr />
           <span>
@@ -120,7 +121,7 @@ function Income({ incomes, setIncomes }: pIncome) {
                 style: "currency",
                 currency: "EUR",
               }).format(
-                incomes.reduce((prev, curr) => prev + curr.incomeAmount, 0)
+                manageData.incomes.reduce((prev, curr) => prev + curr.incomeAmount, 0)
               )}
             </b>
           </span>

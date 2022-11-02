@@ -89,22 +89,10 @@ function App() {
         <ThemeProvider theme={theme}>
           <Nav />
           <div className="main">
-            <IncomeSection incomes={incomes} setIncomes={setIncomes} />
-            <ExpenseSection
-              expenses={expenses}
-              setExpenses={setExpenses}
-              balanceAmount={balance}
-            />
-            <SaivingsTargetSection
-              saving={savings}
-              setSavingsTarget={setSaivings}
-            />
-            <BalanceSection
-              balance={balance}
-              savings={savings}
-              setBalance={setBalance}
-              setSaving={setSaivings}
-            />
+            <IncomeSection />
+            <ExpenseSection />
+            <SaivingsTargetSection />
+            <BalanceSection />
           </div>
         </ThemeProvider>
       </ThemeContext.Provider>

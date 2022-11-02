@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Box,
   OutlinedInput,
@@ -12,10 +12,11 @@ import {
 } from "@mui/material";
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
-import { pExpense } from "../types/pExpense";
 import { tExpense } from "../types/tExpense";
+import { ThemeContext } from "../App";
 
-function Expense({ expenses, setExpenses, balanceAmount }: pExpense) {
+function Expense() {
+  const manageData = useContext(ThemeContext);
   const [expenseSource, setExpenseSource] = useState<string>("");
   const [expenseAmount, setExpenseAmount] = useState<number>(0);
   const [expenseDate, setExpenseDate] = useState<string>("");
@@ -30,7 +31,7 @@ function Expense({ expenses, setExpenses, balanceAmount }: pExpense) {
       }, 3000);
       return;
     }
-    if (balanceAmount >= expenseAmount) {
+    if (manageData.balance >= expenseAmount) {
       const expense: tExpense = {
         id: Date.now().toString(),
         expenseSource,
@@ -38,7 +39,7 @@ function Expense({ expenses, setExpenses, balanceAmount }: pExpense) {
         expenseDate,
       };
       e.currentTarget.reset();
-      setExpenses([expense, ...expenses]);
+      manageData.setExpenses([expense, ...manageData.expenses]);
     } else {
       setMessage("Error: Balance is less then you need");
       setTimeout(function () {
@@ -98,8 +99,8 @@ function Expense({ expenses, setExpenses, balanceAmount }: pExpense) {
       </Button>
 
       <List id="listExpense">
-        {expenses.length > 0 &&
-          expenses.map((expense) => (
+        {manageData.expenses.length > 0 &&
+          manageData.expenses.map((expense) => (
             <ListItem key={expense.id}>
               <p>
                 <strong>Title: {expense.expenseSource}</strong>
@@ -119,7 +120,7 @@ function Expense({ expenses, setExpenses, balanceAmount }: pExpense) {
             </ListItem>
           ))}
       </List>
-      {expenses.length > 0 && (
+      {manageData.expenses.length > 0 && (
         <div>
           <hr />
           <span>
@@ -129,7 +130,7 @@ function Expense({ expenses, setExpenses, balanceAmount }: pExpense) {
                 style: "currency",
                 currency: "EUR",
               }).format(
-                expenses.reduce((prev, curr) => prev + curr.expenseAmount, 0)
+                manageData.expenses.reduce((prev, curr) => prev + curr.expenseAmount, 0)
               )}
             </b>
           </span>
