@@ -7,8 +7,6 @@ import {
   InputAdornment,
   FormControl,
   TextField,
-  List,
-  ListItem,
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
@@ -39,7 +37,7 @@ function Income() {
       incomeAmount,
       incomeDate,
     };
-    //e.currentTarget.reset();
+    e.currentTarget.reset();
     manageData.setIncomes([income, ...manageData.incomes]);
   }
 

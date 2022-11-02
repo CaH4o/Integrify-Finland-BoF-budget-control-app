@@ -17,6 +17,10 @@ function IncomeTable() {
   const manageData = useContext(ThemeContext);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(3);
+  const emptyRows =
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - manageData.incomes.length)
+      : 0;
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -48,13 +52,24 @@ function IncomeTable() {
             .map((row) => (
               <TableRow
                 key={row.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                style={{
+                  height: 33,
+                }}
               >
                 <TableCell>{row.incomeSource}</TableCell>
                 <TableCell>{row.incomeAmount}</TableCell>
                 <TableCell>{row.incomeDate}</TableCell>
               </TableRow>
             ))}
+          {emptyRows > 0 && (
+            <TableRow
+              style={{
+                height: 33 * emptyRows,
+              }}
+            >
+              <TableCell />
+            </TableRow>
+          )}
         </TableBody>
         <TableFooter>
           <TableRow>

@@ -17,16 +17,20 @@ function ExpenseTable() {
   const manageData = useContext(ThemeContext);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(3);
+  const emptyRows =
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - manageData.expenses.length)
+      : 0;
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number,
+    newPage: number
   ) => {
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -43,16 +47,29 @@ function ExpenseTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {manageData.expenses.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+          {manageData.expenses
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((row) => (
+              <TableRow
+                key={row.id}
+                style={{
+                  height: 33,
+                }}
+              >
+                <TableCell>{row.expenseSource}</TableCell>
+                <TableCell>{row.expenseAmount}</TableCell>
+                <TableCell>{row.expenseDate}</TableCell>
+              </TableRow>
+            ))}
+          {emptyRows > 0 && (
             <TableRow
-              key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              style={{
+                height: 33 * emptyRows,
+              }}
             >
-              <TableCell>{row.expenseSource}</TableCell>
-              <TableCell>{row.expenseAmount}</TableCell>
-              <TableCell>{row.expenseDate}</TableCell>
+              <TableCell />
             </TableRow>
-          ))}
+          )}
         </TableBody>
         <TableFooter>
           <TableRow>
