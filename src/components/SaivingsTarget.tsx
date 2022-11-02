@@ -7,6 +7,7 @@ import {
   InputAdornment,
   FormControl,
   Typography,
+  LinearProgress,
 } from "@mui/material";
 import AdjustIcon from "@mui/icons-material/Adjust";
 
@@ -20,7 +21,9 @@ function SaivingsTarget() {
 
   useEffect(
     function () {
-      setProcent(target && manageData.savings ? (manageData.savings / target) * 100 : 0);
+      setProcent(
+        target && manageData.savings ? (manageData.savings / target) * 100 : 0
+      );
     },
     [target, manageData.savings, procent]
   );
@@ -80,10 +83,20 @@ function SaivingsTarget() {
         </b>
       </Typography>
       <Typography color="textPrimary" className="textCenter">
-        <label htmlFor="targetProgress">Progress:</label>
-        <span> {procent.toFixed(0)}% </span>
-        <progress id="targetProgress" value={manageData.savings} max={target} />
+        Progress: {procent.toFixed(0)}%
       </Typography>
+      <LinearProgress
+        variant="determinate"
+        value={
+          target
+            ? (manageData.savings / target) * 100 < 100
+              ? (manageData.savings / target) * 100
+              : 100
+            : 0
+        }
+        sx={{ height: 10, borderRadius: 5 }}
+        color="secondary"
+      />
     </Box>
   );
 }

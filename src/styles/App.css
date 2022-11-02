@@ -3,27 +3,6 @@
   background-color: #9d67db;
 }
 
-.main {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-areas:
-    "income expens target"
-    ". balance .";
-  grid-gap: 0.3em;
-}
-.main section:nth-child(1) {
-  grid-area: income;
-}
-.main section:nth-child(2) {
-  grid-area: expens;
-}
-.main section:nth-child(3) {
-  grid-area: target;
-}
-.main section:nth-child(4) {
-  grid-area: balance;
-}
-
 [id*="form"] {
   padding: 0.5em;
   margin: 0.2em;
@@ -62,30 +41,4 @@ ul li p {
 #listIncome {
   max-height: 250px;
   overflow-y: auto;
-}
-@media only screen and (max-width: 800px) {
-  .main {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      "income expens"
-      "target balance";
-  }
-}
-@media only screen and (max-width: 500px) {
-  .main {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "income"
-      "expens"
-      "balance"
-      "target";
-    grid-gap: 0.2em;
-  }
-}
-@media only screen and (max-height: 600px) and (min-width: 800px) {
-  .main {
-    grid-template-areas:
-      "income expens target"
-      "income expens balance";
-  }
 }

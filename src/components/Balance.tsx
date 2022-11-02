@@ -12,8 +12,6 @@ import SavingsIcon from "@mui/icons-material/Savings";
 
 import { ThemeContext } from "../App";
 
-
-
 function Balance() {
   const [transferAmount, setTransferAmount] = useState<number>(0);
   const [message, setMessage] = useState<string>("");

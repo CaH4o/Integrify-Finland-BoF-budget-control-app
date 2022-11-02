@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import Grid from "@mui/material/Grid";
 
 import "./styles/App.css";
 import Nav from "./components/Nav";
@@ -87,13 +88,23 @@ function App() {
     <div className="root">
       <ThemeContext.Provider value={manageTheme}>
         <ThemeProvider theme={theme}>
-          <Nav />
-          <div className="main">
-            <IncomeSection />
-            <ExpenseSection />
-            <SaivingsTargetSection />
-            <BalanceSection />
-          </div>
+          <Grid container spacing={0.5} justifyContent="center" alignItems="start">
+            <Grid item xs={12}>
+              <Nav />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <IncomeSection />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <ExpenseSection />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <SaivingsTargetSection />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <BalanceSection />
+            </Grid>
+          </Grid>
         </ThemeProvider>
       </ThemeContext.Provider>
     </div>

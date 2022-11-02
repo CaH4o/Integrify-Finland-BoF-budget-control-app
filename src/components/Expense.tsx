@@ -92,7 +92,6 @@ function Expense() {
         type="submit"
         id="btn_addExpense"
         variant="contained"
-        color="secondary"
         endIcon={<RemoveCircleOutlineIcon />}
       >
         Add expense
