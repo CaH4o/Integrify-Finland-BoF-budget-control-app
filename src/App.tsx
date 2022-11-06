@@ -11,25 +11,28 @@ import BalanceSection from "./components/Balance";
 import { tIncome } from "./types/tIncome";
 import { tExpense } from "./types/tExpense";
 import { tContext } from "./types/tContext";
+import { useAppDispatch, useAppSelector } from "./hooks/reduxHooks";
+import { RootState } from "./redux/store";
+import { setBalance } from "./redux/reducers/balance";
+
 
 export const ThemeContext = createContext<tContext>({
-  toggleMode: () => {},
-  incomes: [],
-  expenses: [],
-  savings: 0,
-  balance: 0,
-  setIncomes: () => {},
-  setExpenses: () => {},
-  setSaivings: () => {},
-  setBalance: () => {},
+  toggleMode: () => {}
 });
 
 function App() {
   const [mode, setMode] = useState<"light" | "dark">("light");
-  const [incomes, setIncomes] = useState<tIncome[]>([]);
-  const [expenses, setExpenses] = useState<tExpense[]>([]);
-  const [savings, setSaivings] = useState<number>(0);
-  const [balance, setBalance] = useState<number>(0);
+  const dispatch = useAppDispatch();
+  const incomes: tIncome[] = useAppSelector(
+    (state: RootState) => state.incomeReducer
+  );
+  const expenses: tExpense[] = useAppSelector(
+    (state: RootState) => state.expenseReducer
+  );
+  const savings: number = useAppSelector(
+    (state: RootState) => state.saivingsReducer
+  );
+
   const incomeAmountTotal = incomes.reduce(function (prev, curr) {
     return prev + curr.incomeAmount;
   }, 0);
@@ -38,9 +41,9 @@ function App() {
   }, 0);
   useEffect(
     function () {
-      setBalance(incomeAmountTotal - expansesAmountTotal - savings);
+      dispatch(setBalance(incomeAmountTotal - expansesAmountTotal - savings))
     },
-    [incomes, expenses, savings, expansesAmountTotal, incomeAmountTotal]
+    [incomes, expenses, savings, expansesAmountTotal, incomeAmountTotal, dispatch]
   );
 
   const theme = createTheme({
@@ -73,15 +76,7 @@ function App() {
   const manageTheme = {
     toggleMode: function () {
       setMode((mode) => (mode === "light" ? "dark" : "light"));
-    },
-    incomes,
-    expenses,
-    savings,
-    balance,
-    setIncomes,
-    setExpenses,
-    setSaivings,
-    setBalance,
+    }
   };
 
   return (

@@ -1,30 +1,34 @@
-import React, { useContext } from "react";
+import React from "react";
 import Typography from "@mui/material/Typography";
 
-import { ThemeContext } from "../App";
+import { tExpense } from "../types/tExpense";
+import { useAppSelector } from "../hooks/reduxHooks";
+import { RootState } from "../redux/store";
 
 function ExpenseTotal() {
-  const manageData = useContext(ThemeContext);
+  const expenses: tExpense[] = useAppSelector(
+    (state: RootState) => state.expenseReducer
+  );
 
   return (
+    <>
+    
     <Typography color="textPrimary">
-      <hr />
-      <span>
         Total:{" "}
         <b>
           {new Intl.NumberFormat("fi", {
             style: "currency",
             currency: "EUR",
           }).format(
-            manageData.expenses.reduce(
+            expenses.reduce(
               (prev, curr) => prev + curr.expenseAmount,
               0
             )
           )}
         </b>
-      </span>
-      <hr />
     </Typography>
+    
+    </>
   );
 }
 

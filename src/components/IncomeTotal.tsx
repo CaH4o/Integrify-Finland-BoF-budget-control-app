@@ -1,30 +1,32 @@
-import React, { useContext } from "react";
+import React from "react";
 import Typography from "@mui/material/Typography";
 
-import { ThemeContext } from "../App";
+import { tIncome } from "../types/tIncome";
+import { useAppSelector } from "../hooks/reduxHooks";
+import { RootState } from "../redux/store";
 
 function IncomeTotal() {
-  const manageData = useContext(ThemeContext);
-
+  const incomes: tIncome[] = useAppSelector(
+    (state: RootState) => state.incomeReducer
+  );
+  
   return (
-    <Typography color="textPrimary">
-      <hr />
-      <span>
+    <>
+      <Typography color="textPrimary">
         Total:{" "}
         <b>
           {new Intl.NumberFormat("fi", {
             style: "currency",
             currency: "EUR",
           }).format(
-            manageData.incomes.reduce(
+            incomes.reduce(
               (prev, curr) => prev + curr.incomeAmount,
               0
             )
           )}
         </b>
-      </span>
-      <hr />
-    </Typography>
+      </Typography>
+    </>
   );
 }
 

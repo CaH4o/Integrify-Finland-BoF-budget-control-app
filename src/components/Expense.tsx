@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   Box,
   OutlinedInput,
@@ -11,12 +11,17 @@ import {
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
 import { tExpense } from "../types/tExpense";
-import { ThemeContext } from "../App";
 import ExpenseTable from "./ExpenseTable";
 import ExpenseTotal from "./ExpenseTotal";
+import { addExpenses } from "../redux/reducers/expenses";
+import { RootState } from "../redux/store";
+import { useAppSelector, useAppDispatch } from "../hooks/reduxHooks";
 
 function Expense() {
-  const manageData = useContext(ThemeContext);
+  const dispatch = useAppDispatch();
+  const balance: number = useAppSelector(
+    (state: RootState) => state.balanceReducer
+  );
   const [expenseSource, setExpenseSource] = useState<string>("");
   const [expenseAmount, setExpenseAmount] = useState<number>(0);
   const [expenseDate, setExpenseDate] = useState<string>("");
@@ -31,7 +36,7 @@ function Expense() {
       }, 3000);
       return;
     }
-    if (manageData.balance >= expenseAmount) {
+    if (balance >= expenseAmount) {
       const expense: tExpense = {
         id: Date.now().toString(),
         expenseSource,
@@ -39,7 +44,7 @@ function Expense() {
         expenseDate,
       };
       e.currentTarget.reset();
-      manageData.setExpenses([expense, ...manageData.expenses]);
+      dispatch(addExpenses(expense))
     } else {
       setMessage("Error: Balance is less then you need");
       setTimeout(function () {

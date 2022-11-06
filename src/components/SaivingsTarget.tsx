@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   OutlinedInput,
@@ -11,21 +11,24 @@ import {
 } from "@mui/material";
 import AdjustIcon from "@mui/icons-material/Adjust";
 
-import { ThemeContext } from "../App";
+import { RootState } from "../redux/store";
+import { useAppSelector } from "../hooks/reduxHooks";
 
 function SaivingsTarget() {
-  const manageData = useContext(ThemeContext);
   const [target, setTarget] = useState<number>(0);
   const [tempTarget, setTempTarget] = useState<number>(0);
   const [procent, setProcent] = useState<number>(0);
+  const savings: number = useAppSelector(
+    (state: RootState) => state.saivingsReducer
+  );
 
   useEffect(
     function () {
       setProcent(
-        target && manageData.savings ? (manageData.savings / target) * 100 : 0
+        target && savings ? (savings / target) * 100 : 0
       );
     },
-    [target, manageData.savings, procent]
+    [target, savings, procent]
   );
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
@@ -70,7 +73,7 @@ function SaivingsTarget() {
           {new Intl.NumberFormat("fi", {
             style: "currency",
             currency: "EUR",
-          }).format(manageData.savings)}
+          }).format(savings)}
         </b>
       </Typography>
       <Typography color="textPrimary" className="textCenter">
@@ -89,8 +92,8 @@ function SaivingsTarget() {
         variant="determinate"
         value={
           target
-            ? (manageData.savings / target) * 100 < 100
-              ? (manageData.savings / target) * 100
+            ? (savings / target) * 100 < 100
+              ? (savings / target) * 100
               : 100
             : 0
         }

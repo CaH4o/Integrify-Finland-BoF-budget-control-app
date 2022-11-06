@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
   Box,
   OutlinedInput,
@@ -10,12 +10,22 @@ import {
 } from "@mui/material";
 import SavingsIcon from "@mui/icons-material/Savings";
 
-import { ThemeContext } from "../App";
+import { setBalance } from "../redux/reducers/balance";
+import { setSaivings } from "../redux/reducers/saivings";
+import { RootState } from "../redux/store";
+import { useAppSelector, useAppDispatch } from "../hooks/reduxHooks";
 
 function Balance() {
+  const dispatch = useAppDispatch();
+  const balance: number = useAppSelector(
+    (state: RootState) => state.balanceReducer
+  );
+  const savings: number = useAppSelector(
+    (state: RootState) => state.saivingsReducer
+  );
   const [transferAmount, setTransferAmount] = useState<number>(0);
   const [message, setMessage] = useState<string>("");
-  const manageData = useContext(ThemeContext);
+
   
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -26,15 +36,15 @@ function Balance() {
       }, 3000);
       return;
     }
-    if (transferAmount > manageData.balance) {
+    if (transferAmount > balance) {
       setMessage("Error: Balance is less then you need");
       setTimeout(function () {
         setMessage("");
       }, 3000);
       return;
     } else {
-      manageData.setBalance(manageData.balance - transferAmount);
-      manageData.setSaivings(manageData.savings + transferAmount);
+      dispatch(setBalance(balance - transferAmount))
+      dispatch(setSaivings(savings + transferAmount))
     }
     e.currentTarget.reset();
   }
@@ -53,7 +63,7 @@ function Balance() {
           {new Intl.NumberFormat("fi", {
             style: "currency",
             currency: "EUR",
-          }).format(manageData.balance)}
+          }).format(balance)}
         </b>
       </Typography>
 

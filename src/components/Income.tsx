@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   Box,
   OutlinedInput,
@@ -10,13 +10,14 @@ import {
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
-import { ThemeContext } from "../App";
 import { tIncome } from "../types/tIncome";
 import IncomeTable from "./IncomeTable";
 import IncomeTotal from "./IncomeTotal";
+import { addIncome } from "../redux/reducers/incomes";
+import { useAppDispatch } from "../hooks/reduxHooks";
 
 function Income() {
-  const manageData = useContext(ThemeContext);
+  const dispatch = useAppDispatch();
   const [incomeSource, setIncomeSource] = useState<string>("");
   const [incomeAmount, setIncomeAmount] = useState<number>(0);
   const [incomeDate, setIncomeDate] = useState<string>("");
@@ -35,10 +36,10 @@ function Income() {
       id: Date.now().toString(),
       incomeSource,
       incomeAmount,
-      incomeDate,
+      incomeDate
     };
-    e.currentTarget.reset();
-    manageData.setIncomes([income, ...manageData.incomes]);
+    //e.currentTarget.reset();
+    dispatch(addIncome(income));
   }
 
   return (
@@ -47,7 +48,7 @@ function Income() {
       autoComplete="off"
       onSubmit={(e) => submit(e)}
       id="formIncome"
-      sx={{ bgcolor:"background.default" }}
+      sx={{ bgcolor: "background.default" }}
     >
       <TextField
         sx={{ m: 1 }}
