@@ -11,7 +11,7 @@ import {
 import SavingsIcon from "@mui/icons-material/Savings";
 
 import { setBalance } from "../redux/reducers/balance";
-import { setSaivings } from "../redux/reducers/saivings";
+import { setSavings } from "../redux/reducers/savings";
 import { RootState } from "../redux/store";
 import { useAppSelector, useAppDispatch } from "../hooks/reduxHooks";
 
@@ -21,7 +21,7 @@ function Balance() {
     (state: RootState) => state.balanceReducer
   );
   const savings: number = useAppSelector(
-    (state: RootState) => state.saivingsReducer
+    (state: RootState) => state.savingsReducer.savings
   );
   const [transferAmount, setTransferAmount] = useState<number>(0);
   const [message, setMessage] = useState<string>("");
@@ -44,7 +44,7 @@ function Balance() {
       return;
     } else {
       dispatch(setBalance(balance - transferAmount))
-      dispatch(setSaivings(savings + transferAmount))
+      dispatch(setSavings(savings + transferAmount))
     }
     e.currentTarget.reset();
   }

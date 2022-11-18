@@ -6,7 +6,7 @@ import "./styles/App.css";
 import Nav from "./components/Nav";
 import IncomeSection from "./components/Income";
 import ExpenseSection from "./components/Expense";
-import SaivingsTargetSection from "./components/SaivingsTarget";
+import SavingsTargetSection from "./components/SavingsTarget";
 import BalanceSection from "./components/Balance";
 import { tIncome } from "./types/tIncome";
 import { tExpense } from "./types/tExpense";
@@ -30,7 +30,7 @@ function App() {
     (state: RootState) => state.expenseReducer
   );
   const savings: number = useAppSelector(
-    (state: RootState) => state.saivingsReducer
+    (state: RootState) => state.savingsReducer.savings
   );
 
   const incomeAmountTotal = incomes.reduce(function (prev, curr) {
@@ -94,7 +94,7 @@ function App() {
               <ExpenseSection />
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
-              <SaivingsTargetSection />
+              <SavingsTargetSection />
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
               <BalanceSection />

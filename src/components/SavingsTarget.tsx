@@ -10,32 +10,41 @@ import {
   LinearProgress,
 } from "@mui/material";
 import AdjustIcon from "@mui/icons-material/Adjust";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 import { RootState } from "../redux/store";
-import { useAppSelector } from "../hooks/reduxHooks";
+import { useAppSelector, useAppDispatch } from "../hooks/reduxHooks";
+import { setTarget, setSavings } from "../redux/reducers/savings";
+import { tSavingsTarget } from "../types/tSavingsTarget";
+import { addBalance } from "../redux/reducers/balance";
 
-function SaivingsTarget() {
-  const [target, setTarget] = useState<number>(0);
+function SavingsTarget() {
+  const dispatch = useAppDispatch();
   const [tempTarget, setTempTarget] = useState<number>(0);
   const [procent, setProcent] = useState<number>(0);
-  const savings: number = useAppSelector(
-    (state: RootState) => state.saivingsReducer
+  const { savings, target }: tSavingsTarget = useAppSelector(
+    (state: RootState) => state.savingsReducer
   );
 
   useEffect(
     function () {
-      setProcent(
-        target && savings ? (savings / target) * 100 : 0
-      );
+      setProcent(target && savings ? (savings / target) * 100 : 0);
     },
     [target, savings, procent]
   );
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setTarget(tempTarget);
+    dispatch(setTarget(tempTarget));
     setTempTarget(0);
     e.currentTarget.reset();
+  }
+
+  function reset() {
+    if (savings) {
+      dispatch(addBalance(savings));
+      dispatch(setSavings(0));
+    }
   }
 
   return (
@@ -61,11 +70,19 @@ function SaivingsTarget() {
       <Button
         sx={{ m: 1 }}
         type="submit"
-        id="btn_resetTarget"
         variant="contained"
         endIcon={<AdjustIcon />}
       >
         Set target
+      </Button>
+      <Button
+        sx={{ m: 1 }}
+        type="button"
+        variant="contained"
+        endIcon={<RestartAltIcon />}
+        onClick={reset}
+      >
+        Reset savings
       </Button>
       <Typography color="textPrimary" className="textCenter">
         Current saving:{" "}
@@ -104,4 +121,4 @@ function SaivingsTarget() {
   );
 }
 
-export default SaivingsTarget;
+export default SavingsTarget;

@@ -38,7 +38,7 @@ function Income() {
       incomeAmount,
       incomeDate
     };
-    //e.currentTarget.reset();
+    e.currentTarget.reset();
     dispatch(addIncome(income));
   }
 
