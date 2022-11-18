@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableHead,
@@ -9,9 +9,11 @@ import {
   TableContainer,
   TablePagination,
   TextField,
+  TableSortLabel,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import FlipCameraAndroidIcon from "@mui/icons-material/FlipCameraAndroid";
 
 import { tExpense } from "../types/tExpense";
 import { RootState } from "../redux/store";
@@ -26,34 +28,62 @@ function ExpenseTable() {
   const expenses: tExpense[] = useAppSelector(
     (state: RootState) => state.expenseReducer
   );
-  const [orderAmount, setOrderAmount] = useState<"asc" | "dsc">("asc");
-  const [searchExpense, setSearchExpense] = useState<string>("");
+  const [orderAmount, setOrderAmount] = useState<"asc" | "desc">("asc");
+  const [searchExpense, setSearchExpense] = useState<tExpense[]>(expenses);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(3);
   const emptyRows =
-    page > 0
-      ? Math.max(
-          0,
-          (1 + page) * rowsPerPage -
-            expenses.filter((item) =>
-              item.expenseSource.includes(searchExpense)
-            ).length
-        )
-      : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - searchExpense.length) : 0;
 
-  const handleChangePage = (
+  useEffect(
+    function () {
+      setSearchExpense(expenses);
+    },
+    [expenses]
+  );
+
+  useEffect(
+    function () {
+      if (page) setPage(0);
+    },
+    [searchExpense]
+  );
+
+  function handleChangePage(
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
-  ) => {
+  ) {
     setPage(newPage);
-  };
+  }
 
-  const handleChangeRowsPerPage = (
+  function handleChangeRowsPerPage(
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  ) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  };
+  }
+
+  function hendelSearchExpense(
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ): void {
+    const tempSearchExpense: tExpense[] = expenses.filter((expense) => {
+      return (
+        expense.expenseSource +
+        "|" +
+        expense.expenseAmount +
+        "|" +
+        expense.expenseDate
+      )
+        .toLowerCase()
+        .includes(event.target.value.toLowerCase());
+    });
+    if (tempSearchExpense.length) {
+      setSearchExpense(tempSearchExpense);
+    } else {
+      setSearchExpense(expenses);
+      //+message Note found
+    }
+  }
 
   function onCkickDeleteExpenses(id: string) {
     dispatch(deleteExpenses(id));
@@ -62,7 +92,7 @@ function ExpenseTable() {
   function sortAmount() {
     dispatch(sortExpensesByAmount(orderAmount));
     if (orderAmount === "asc") {
-      setOrderAmount("dsc");
+      setOrderAmount("desc");
     } else {
       setOrderAmount("asc");
     }
@@ -74,7 +104,7 @@ function ExpenseTable() {
         label="Search"
         placeholder="Search"
         type="text"
-        onChange={(e) => setSearchExpense(e.target.value)}
+        onChange={hendelSearchExpense}
       />
 
       <TableContainer component={Paper}>
@@ -82,16 +112,22 @@ function ExpenseTable() {
           <TableHead>
             <TableRow>
               <TableCell align="center">Title</TableCell>
-              <TableCell align="center" onClick={() => sortAmount()}>
-                Amount
+              <TableCell align="center">
+                <TableSortLabel onClick={sortAmount} direction={orderAmount}>
+                  Amount
+                </TableSortLabel>
               </TableCell>
               <TableCell align="center">Date</TableCell>
-              <TableCell align="right">Action</TableCell>
+              <TableCell width={10} align="center">
+                Edit
+              </TableCell>
+              <TableCell width={10} align="center">
+                Delete
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {expenses
-              .filter((item) => item.expenseSource.includes(searchExpense))
+            {searchExpense
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <TableRow
@@ -100,9 +136,15 @@ function ExpenseTable() {
                     height: 33,
                   }}
                 >
-                  <TableCell>{row.expenseSource}</TableCell>
-                  <TableCell>{row.expenseAmount}</TableCell>
-                  <TableCell>{row.expenseDate}</TableCell>
+                  <TableCell align="center">{row.expenseSource}</TableCell>
+                  <TableCell align="center">{row.expenseAmount}</TableCell>
+                  <TableCell align="center">{row.expenseDate}</TableCell>
+                  <TableCell
+                    //onClick={() => onCkick(row.id)}
+                    align="center"
+                  >
+                    <FlipCameraAndroidIcon />
+                  </TableCell>
                   <TableCell
                     onClick={() => onCkickDeleteExpenses(row.id)}
                     align="right"
@@ -125,11 +167,7 @@ function ExpenseTable() {
             <TableRow>
               <TablePagination
                 rowsPerPageOptions={[3, 5, 10]}
-                count={
-                  expenses.filter((item) =>
-                    item.expenseSource.includes(searchExpense)
-                  ).length
-                }
+                count={searchExpense.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

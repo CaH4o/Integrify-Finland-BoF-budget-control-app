@@ -7,13 +7,19 @@ const expensesSlicer = createSlice({
   name: "expenses",
   initialState,
   reducers: {
-    addExpenses: (state: tExpense[], action: PayloadAction<tExpense>) => {
+    addExpenses: function (state: tExpense[], action: PayloadAction<tExpense>) {
       return [...state, action.payload];
     },
-    deleteExpenses: (state: tExpense[], action: PayloadAction<string>) => {
+    deleteExpenses: function (
+      state: tExpense[],
+      action: PayloadAction<string>
+    ) {
       return state.filter((item: tExpense) => item.id !== action.payload);
     },
-    sortExpensesByAmount: (state: tExpense[], action: PayloadAction<string>) => {
+    sortExpensesByAmount: function (
+      state: tExpense[],
+      action: PayloadAction<string>
+    ) {
       if (action.payload === "asc") {
         state.sort((a, b) => a.expenseAmount - b.expenseAmount);
       } else {
@@ -24,5 +30,6 @@ const expensesSlicer = createSlice({
 });
 
 const expenseReducer = expensesSlicer.reducer;
-export const { addExpenses, deleteExpenses, sortExpensesByAmount } = expensesSlicer.actions;
+export const { addExpenses, deleteExpenses, sortExpensesByAmount } =
+  expensesSlicer.actions;
 export default expenseReducer;

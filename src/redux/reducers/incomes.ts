@@ -7,13 +7,16 @@ const incomeSlicer = createSlice({
   name: "incomes",
   initialState,
   reducers: {
-    addIncome: (state: tIncome[], action: PayloadAction<tIncome>) => {
+    addIncome: function (state: tIncome[], action: PayloadAction<tIncome>) {
       return [...state, action.payload];
     },
-    deleteIncome: (state: tIncome[], action: PayloadAction<string>) => {
+    deleteIncome: function (state: tIncome[], action: PayloadAction<string>) {
       return state.filter((item: tIncome) => item.id !== action.payload);
     },
-    sortIncomeByAmount: (state: tIncome[], action: PayloadAction<string>) => {
+    sortIncomeByAmount: function (
+      state: tIncome[],
+      action: PayloadAction<string>
+    ) {
       if (action.payload === "asc") {
         state.sort((a, b) => a.incomeAmount - b.incomeAmount);
       } else {

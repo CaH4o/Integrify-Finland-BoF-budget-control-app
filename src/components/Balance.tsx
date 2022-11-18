@@ -26,7 +26,6 @@ function Balance() {
   const [transferAmount, setTransferAmount] = useState<number>(0);
   const [message, setMessage] = useState<string>("");
 
-  
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (transferAmount < 50) {
