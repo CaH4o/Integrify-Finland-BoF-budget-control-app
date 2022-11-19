@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import {
   AppBar,
   Toolbar,
@@ -10,7 +10,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { ThemeContext } from "../App";
 
-function Nav() {
+export default function Nav() {
   const themeMode = useTheme();
   const colorMode = useContext(ThemeContext);
 
@@ -36,5 +36,3 @@ function Nav() {
     </AppBar>
   );
 }
-
-export default Nav;

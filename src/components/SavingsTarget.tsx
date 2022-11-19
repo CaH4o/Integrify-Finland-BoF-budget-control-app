@@ -18,7 +18,7 @@ import { setTarget, setSavings } from "../redux/reducers/savings";
 import { tSavingsTarget } from "../types/tSavingsTarget";
 import { addBalance } from "../redux/reducers/balance";
 
-function SavingsTarget() {
+export default function SavingsTarget() {
   const dispatch = useAppDispatch();
   const [tempTarget, setTempTarget] = useState<number>(0);
   const [procent, setProcent] = useState<number>(0);
@@ -48,33 +48,33 @@ function SavingsTarget() {
   }
 
   return (
-    <Box
-      component="form"
-      autoComplete="off"
-      onSubmit={(e) => submit(e)}
-      id="formTarget"
-      sx={{ bgcolor: "background.default" }}
-    >
-      <FormControl sx={{ m: 1 }} required>
-        <InputLabel htmlFor="setTarget">Set target</InputLabel>
-        <OutlinedInput
-          label="Set target"
-          type="number"
-          id="setTarget"
-          placeholder="20000"
-          //min="0"
-          onChange={(e) => setTempTarget(Number(e.target.value))}
-          startAdornment={<InputAdornment position="start">€</InputAdornment>}
-        />
-      </FormControl>
-      <Button
-        sx={{ m: 1 }}
-        type="submit"
-        variant="contained"
-        endIcon={<AdjustIcon />}
+    <Box className="component" sx={{ bgcolor: "background.default" }}>
+      <Box
+        component="form"
+        autoComplete="off"
+        onSubmit={(e) => submit(e)}
+        className="componentForm"
       >
-        Set target
-      </Button>
+        <FormControl sx={{ m: 1 }} required>
+          <InputLabel htmlFor="setTarget">Set target</InputLabel>
+          <OutlinedInput
+            label="Set target"
+            type="number"
+            placeholder="20000"
+            //min="0"
+            onChange={(e) => setTempTarget(Number(e.target.value))}
+            startAdornment={<InputAdornment position="start">€</InputAdornment>}
+          />
+        </FormControl>
+        <Button
+          sx={{ m: 1 }}
+          type="submit"
+          variant="contained"
+          endIcon={<AdjustIcon />}
+        >
+          Set target
+        </Button>
+      </Box>
       <Button
         sx={{ m: 1 }}
         type="button"
@@ -120,5 +120,3 @@ function SavingsTarget() {
     </Box>
   );
 }
-
-export default SavingsTarget;

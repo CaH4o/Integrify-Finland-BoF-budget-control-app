@@ -1,44 +1,30 @@
 .root {
-  height : 100%;
+  min-height: 100hv;
   background-color: #9d67db;
 }
-
-[id*="form"] {
-  padding: 0.5em;
-  margin: 0.2em;
-  border-color: thistle;
-  box-shadow: 3px 3px 1px 1px slategray;
+.component {
+  padding: 0.3rem;
+  margin: 0.2rem;
   display: flex;
   flex-direction: column;
-  gap: 1px;
-  margin: 0.2em;
+  gap: 0.2rem;
+  box-shadow: 3px 3px 1px 1px slategray;
 }
-
+.componentForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.componentTable {
+  padding: 0.3rem;
+  display: flex;
+  flex-direction: column;
+}
 .textCenter {
   text-align: center;
   padding: 0.3rem;
- }
-
-ul {
-  list-style-type: none;
-  margin: 0.3em 0;
-  padding: 0;
-}
-ul li {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 0;
-}
-ul li p {
-  margin: 0;
 }
 .error {
   color: red;
   font-weight: bold;
-}
-#listExpense,
-#listIncome {
-  max-height: 250px;
-  overflow-y: auto;
 }

@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 
@@ -15,9 +15,8 @@ import { useAppDispatch, useAppSelector } from "./hooks/reduxHooks";
 import { RootState } from "./redux/store";
 import { setBalance } from "./redux/reducers/balance";
 
-
 export const ThemeContext = createContext<tContext>({
-  toggleMode: () => {}
+  toggleMode: () => {},
 });
 
 function App() {
@@ -41,9 +40,16 @@ function App() {
   }, 0);
   useEffect(
     function () {
-      dispatch(setBalance(incomeAmountTotal - expansesAmountTotal - savings))
+      dispatch(setBalance(incomeAmountTotal - expansesAmountTotal - savings));
     },
-    [incomes, expenses, savings, expansesAmountTotal, incomeAmountTotal, dispatch]
+    [
+      incomes,
+      expenses,
+      savings,
+      expansesAmountTotal,
+      incomeAmountTotal,
+      dispatch,
+    ]
   );
 
   const theme = createTheme({
@@ -76,14 +82,19 @@ function App() {
   const manageTheme = {
     toggleMode: function () {
       setMode((mode) => (mode === "light" ? "dark" : "light"));
-    }
+    },
   };
 
   return (
     <div className="root">
       <ThemeContext.Provider value={manageTheme}>
         <ThemeProvider theme={theme}>
-          <Grid container spacing={0.5} justifyContent="center" alignItems="start">
+          <Grid
+            container
+            spacing={0.5}
+            justifyContent="center"
+            alignItems="start"
+          >
             <Grid item xs={12}>
               <Nav />
             </Grid>

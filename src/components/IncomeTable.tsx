@@ -10,17 +10,19 @@ import {
   TablePagination,
   TextField,
   TableSortLabel,
+  Button,
+  Box
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import FlipCameraAndroidIcon from "@mui/icons-material/FlipCameraAndroid";
 
 import { tIncome } from "../types/tIncome";
 import { RootState } from "../redux/store";
 import { deleteIncome, sortIncomeByAmount } from "../redux/reducers/incomes";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import IncomeEdit from "./IncomeEdit";
 
-function IncomeTable() {
+export default function IncomeTable() {
   const dispatch = useAppDispatch();
   const balance: number = useAppSelector(
     (state: RootState) => state.balanceReducer
@@ -105,7 +107,7 @@ function IncomeTable() {
   }
 
   return (
-    <>
+    <Box className="componentTable">
       <TextField
         label="Search"
         placeholder="Search"
@@ -134,27 +136,26 @@ function IncomeTable() {
           <TableBody>
             {searchIncome
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row: tIncome) => (
+              .map((income: tIncome) => (
                 <TableRow
-                  key={row.id}
+                  key={income.id}
                   style={{
                     height: 33,
                   }}
                 >
-                  <TableCell align="center">{row.incomeSource}</TableCell>
-                  <TableCell align="center">{row.incomeAmount}</TableCell>
-                  <TableCell align="center">{row.incomeDate}</TableCell>
-                  <TableCell
-                    //onClick={() => onCkickDeleteIncome(row.id)}
-                    align="center"
-                  >
-                    <FlipCameraAndroidIcon />
+                  <TableCell align="center">{income.incomeSource}</TableCell>
+                  <TableCell align="center">{income.incomeAmount}</TableCell>
+                  <TableCell align="center">{income.incomeDate}</TableCell>
+                  <TableCell align="center" width={10}>
+                    <IncomeEdit income={income} />
                   </TableCell>
-                  <TableCell
-                    onClick={() => onCkickDeleteIncome(row.id)}
-                    align="center"
-                  >
-                    <HighlightOffIcon />
+                  <TableCell align="center" width={10}>
+                    <Button
+                      onClick={() => onCkickDeleteIncome(income.id)}
+                      color="secondary"
+                    >
+                      <HighlightOffIcon />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -182,8 +183,6 @@ function IncomeTable() {
           </TableFooter>
         </Table>
       </TableContainer>
-    </>
+    </Box>
   );
 }
-
-export default IncomeTable;

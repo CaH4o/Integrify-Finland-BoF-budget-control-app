@@ -15,7 +15,7 @@ import { setSavings } from "../redux/reducers/savings";
 import { RootState } from "../redux/store";
 import { useAppSelector, useAppDispatch } from "../hooks/reduxHooks";
 
-function Balance() {
+export default function Balance() {
   const dispatch = useAppDispatch();
   const balance: number = useAppSelector(
     (state: RootState) => state.balanceReducer
@@ -42,8 +42,8 @@ function Balance() {
       }, 3000);
       return;
     } else {
-      dispatch(setBalance(balance - transferAmount))
-      dispatch(setSavings(savings + transferAmount))
+      dispatch(setBalance(balance - transferAmount));
+      dispatch(setSavings(savings + transferAmount));
     }
     e.currentTarget.reset();
   }
@@ -53,8 +53,9 @@ function Balance() {
       component="form"
       autoComplete="off"
       onSubmit={(e) => submit(e)}
-      id="formBalance"
+      className="component"
       sx={{ bgcolor: "background.default" }}
+      
     >
       <Typography color="textPrimary" className="textCenter">
         Current balance:{" "}
@@ -94,5 +95,3 @@ function Balance() {
     </Box>
   );
 }
-
-export default Balance;

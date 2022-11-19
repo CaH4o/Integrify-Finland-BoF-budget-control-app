@@ -10,10 +10,11 @@ import {
   TablePagination,
   TextField,
   TableSortLabel,
+  Button, 
+  Box,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import FlipCameraAndroidIcon from "@mui/icons-material/FlipCameraAndroid";
 
 import { tExpense } from "../types/tExpense";
 import { RootState } from "../redux/store";
@@ -22,8 +23,9 @@ import {
   sortExpensesByAmount,
 } from "../redux/reducers/expenses";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import ExpenseEdit from "./ExpenseEdit";
 
-function ExpenseTable() {
+export default function ExpenseTable() {
   const dispatch = useAppDispatch();
   const expenses: tExpense[] = useAppSelector(
     (state: RootState) => state.expenseReducer
@@ -99,7 +101,7 @@ function ExpenseTable() {
   }
 
   return (
-    <>
+    <Box className="componentTable">
       <TextField
         label="Search"
         placeholder="Search"
@@ -129,27 +131,26 @@ function ExpenseTable() {
           <TableBody>
             {searchExpense
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row) => (
+              .map((expense) => (
                 <TableRow
-                  key={row.id}
+                  key={expense.id}
                   style={{
                     height: 33,
                   }}
                 >
-                  <TableCell align="center">{row.expenseSource}</TableCell>
-                  <TableCell align="center">{row.expenseAmount}</TableCell>
-                  <TableCell align="center">{row.expenseDate}</TableCell>
-                  <TableCell
-                    //onClick={() => onCkick(row.id)}
-                    align="center"
-                  >
-                    <FlipCameraAndroidIcon />
+                  <TableCell align="center">{expense.expenseSource}</TableCell>
+                  <TableCell align="center">{expense.expenseAmount}</TableCell>
+                  <TableCell align="center">{expense.expenseDate}</TableCell>
+                  <TableCell align="center" width={10} >
+                    <ExpenseEdit expense={expense}/>
                   </TableCell>
-                  <TableCell
-                    onClick={() => onCkickDeleteExpenses(row.id)}
-                    align="right"
-                  >
-                    <HighlightOffIcon />
+                  <TableCell align="right" width={10} >
+                    <Button
+                      onClick={() => onCkickDeleteExpenses(expense.id)}
+                      color="secondary"
+                    >
+                      <HighlightOffIcon />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -177,8 +178,6 @@ function ExpenseTable() {
           </TableFooter>
         </Table>
       </TableContainer>
-    </>
+    </Box>
   );
 }
-
-export default ExpenseTable;

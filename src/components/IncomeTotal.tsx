@@ -1,17 +1,16 @@
-import React from "react";
-import Typography from "@mui/material/Typography";
+import { Box, Typography } from "@mui/material";
 
 import { tIncome } from "../types/tIncome";
 import { useAppSelector } from "../hooks/reduxHooks";
 import { RootState } from "../redux/store";
 
-function IncomeTotal() {
+export default function IncomeTotal() {
   const incomes: tIncome[] = useAppSelector(
     (state: RootState) => state.incomeReducer
   );
-  
+
   return (
-    <>
+    <Box className="textCenter">
       <Typography color="textPrimary">
         Total:{" "}
         <b>
@@ -19,15 +18,10 @@ function IncomeTotal() {
             style: "currency",
             currency: "EUR",
           }).format(
-            incomes.reduce(
-              (prev, curr) => prev + curr.incomeAmount,
-              0
-            )
+            incomes.reduce((prev, curr) => prev + curr.incomeAmount, 0)
           )}
         </b>
       </Typography>
-    </>
+    </Box>
   );
 }
-
-export default IncomeTotal;
