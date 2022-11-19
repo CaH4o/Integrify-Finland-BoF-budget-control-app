@@ -10,15 +10,26 @@ import {
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
+import { RootState } from "../redux/store";
 import { tIncome } from "../types/tIncome";
-import { addIncome } from "../redux/reducers/incomes";
-import { useAppDispatch } from "../hooks/reduxHooks";
+import { pIncomeForm } from "../types/pIncomeForm";
+import { addIncome, editIncome } from "../redux/reducers/incomes";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 
-export default function IncomeForm() {
+export default function IncomeForm({ income, setOpen }: pIncomeForm) {
   const dispatch = useAppDispatch();
-  const [incomeSource, setIncomeSource] = useState<string>("");
-  const [incomeAmount, setIncomeAmount] = useState<number>(0);
-  const [incomeDate, setIncomeDate] = useState<string>("");
+  const balance: number = useAppSelector(
+    (state: RootState) => state.balanceReducer
+  );
+  const [incomeSource, setIncomeSource] = useState<string>(
+    income ? income.incomeSource : ""
+  );
+  const [incomeAmount, setIncomeAmount] = useState<number>(
+    income ? income.incomeAmount : 0
+  );
+  const [incomeDate, setIncomeDate] = useState<string>(
+    income ? income.incomeDate : ""
+  );
   const [message, setMessage] = useState<string>("");
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
@@ -30,14 +41,27 @@ export default function IncomeForm() {
       }, 3000);
       return;
     }
-    const income: tIncome = {
-      id: Date.now().toString(),
+    const sendIncome: tIncome = {
+      id: income ? income.id : Date.now().toString(),
       incomeSource,
       incomeAmount,
       incomeDate,
     };
+    if (income) {
+      if (balance < income.incomeAmount - incomeAmount) {
+        setMessage("Error: The amount is less then balance");
+        setTimeout(function () {
+          setMessage("");
+        }, 3000);
+        return;
+      } else {
+        dispatch(editIncome(sendIncome));
+        if (setOpen) setOpen(false);
+      }
+    } else {
+      dispatch(addIncome(sendIncome));
+    }
     e.currentTarget.reset();
-    dispatch(addIncome(income));
   }
 
   return (
@@ -54,15 +78,16 @@ export default function IncomeForm() {
         placeholder="Salary"
         type="text"
         onChange={(e) => setIncomeSource(e.target.value)}
+        value={incomeSource}
       />
       <FormControl sx={{ m: 1 }} required>
         <InputLabel htmlFor="incomeAmount">Amount of income</InputLabel>
         <OutlinedInput
           label="Amount of income"
           type="number"
-          id="incomeAmount"
           onChange={(e) => setIncomeAmount(Number(e.target.value))}
           startAdornment={<InputAdornment position="start">€</InputAdornment>}
+          value={incomeAmount || ""}
         />
       </FormControl>
       <TextField
@@ -72,6 +97,7 @@ export default function IncomeForm() {
         type="date"
         onChange={(e) => setIncomeDate(e.target.value)}
         InputLabelProps={{ shrink: true }}
+        value={incomeDate}
       />
       <Button
         sx={{ m: 1 }}
@@ -79,8 +105,9 @@ export default function IncomeForm() {
         id="btn_addIncome"
         variant="contained"
         endIcon={<AddCircleOutlineIcon />}
+        color={income ? "success" : "primary"}
       >
-        Add income
+        {income ? "Edit income" : "Add income"}
       </Button>
       {message.length > 0 && <span className="error">{message}</span>}
     </Box>

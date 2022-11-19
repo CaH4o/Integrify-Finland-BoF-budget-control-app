@@ -11,18 +11,25 @@ import {
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
 import { tExpense } from "../types/tExpense";
-import { addExpenses } from "../redux/reducers/expenses";
+import { pExpenseForm } from "../types/pExpenseForm";
 import { RootState } from "../redux/store";
 import { useAppSelector, useAppDispatch } from "../hooks/reduxHooks";
+import { addExpenses, editExpenses } from "../redux/reducers/expenses";
 
-export default function ExpenseForm() {
+export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
   const dispatch = useAppDispatch();
   const balance: number = useAppSelector(
     (state: RootState) => state.balanceReducer
   );
-  const [expenseSource, setExpenseSource] = useState<string>("");
-  const [expenseAmount, setExpenseAmount] = useState<number>(0);
-  const [expenseDate, setExpenseDate] = useState<string>("");
+  const [expenseSource, setExpenseSource] = useState<string>(
+    expense ? expense.expenseSource : ""
+  );
+  const [expenseAmount, setExpenseAmount] = useState<number>(
+    expense ? expense.expenseAmount : 0
+  );
+  const [expenseDate, setExpenseDate] = useState<string>(
+    expense ? expense.expenseDate : ""
+  );
   const [message, setMessage] = useState<string>("");
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
@@ -35,14 +42,19 @@ export default function ExpenseForm() {
       return;
     }
     if (balance >= expenseAmount) {
-      const expense: tExpense = {
-        id: Date.now().toString(),
+      const sendExpense: tExpense = {
+        id: expense ? expense.id : Date.now().toString(),
         expenseSource,
         expenseAmount,
         expenseDate,
       };
       e.currentTarget.reset();
-      dispatch(addExpenses(expense));
+      if (expense) {
+        dispatch(editExpenses(sendExpense));
+      } else {
+        dispatch(addExpenses(sendExpense));
+      }
+      if (setOpen) setOpen(false);
     } else {
       setMessage("Error: Balance is less then you need");
       setTimeout(function () {
@@ -56,48 +68,45 @@ export default function ExpenseForm() {
       component="form"
       autoComplete="off"
       onSubmit={(e) => submit(e)}
-      id="formExpense"
       className="componentForm"
     >
       <TextField
         sx={{ m: 1 }}
         required
-        id="expenseSource"
-        name="expenseSource"
         label="Expense source"
         placeholder="bill for ..."
         //min="0"
         type="text"
         onChange={(e) => setExpenseSource(e.target.value)}
+        value={expenseSource}
       />
       <FormControl sx={{ m: 1 }} required>
         <InputLabel htmlFor="expenseAmount">Amount of expense</InputLabel>
         <OutlinedInput
           label="Amount of expense"
           type="number"
-          id="expenseAmount"
           onChange={(e) => setExpenseAmount(Number(e.target.value))}
           startAdornment={<InputAdornment position="start">€</InputAdornment>}
+          value={expenseAmount || ""}
         />
       </FormControl>
       <TextField
         sx={{ m: 1 }}
         required
-        id="expenseDate"
-        name="expenseDate"
         label="Date of expense"
         type="date"
         onChange={(e) => setExpenseDate(e.target.value)}
         InputLabelProps={{ shrink: true }}
+        value={expenseDate}
       />
       <Button
         sx={{ m: 1 }}
         type="submit"
-        id="btn_addExpense"
         variant="contained"
         endIcon={<RemoveCircleOutlineIcon />}
+        color={expense ? "success" : "primary"}
       >
-        Add expense
+        {expense ? "Edit expense" : "Add expense"}
       </Button>
       {message.length > 0 && <span className="error">{message}</span>}
     </Box>

@@ -13,6 +13,11 @@ const incomeSlicer = createSlice({
     deleteIncome: function (state: tIncome[], action: PayloadAction<string>) {
       return state.filter((item: tIncome) => item.id !== action.payload);
     },
+    editIncome: function (state: tIncome[], action: PayloadAction<tIncome>) {
+      return state.map(function (income) {
+        return income.id === action.payload.id ? action.payload : income;
+      });
+    },
     sortIncomeByAmount: function (
       state: tIncome[],
       action: PayloadAction<string>
@@ -27,6 +32,6 @@ const incomeSlicer = createSlice({
 });
 
 const incomeReducer = incomeSlicer.reducer;
-export const { addIncome, deleteIncome, sortIncomeByAmount } =
+export const { addIncome, deleteIncome, editIncome, sortIncomeByAmount } =
   incomeSlicer.actions;
 export default incomeReducer;

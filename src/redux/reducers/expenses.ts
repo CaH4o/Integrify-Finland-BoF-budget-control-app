@@ -16,6 +16,14 @@ const expensesSlicer = createSlice({
     ) {
       return state.filter((item: tExpense) => item.id !== action.payload);
     },
+    editExpenses: function (
+      state: tExpense[],
+      action: PayloadAction<tExpense>
+    ) {
+      return state.map(function (expense) {
+        return expense.id === action.payload.id ? action.payload : expense;
+      });
+    },
     sortExpensesByAmount: function (
       state: tExpense[],
       action: PayloadAction<string>
@@ -30,6 +38,10 @@ const expensesSlicer = createSlice({
 });
 
 const expenseReducer = expensesSlicer.reducer;
-export const { addExpenses, deleteExpenses, sortExpensesByAmount } =
-  expensesSlicer.actions;
+export const {
+  addExpenses,
+  deleteExpenses,
+  editExpenses,
+  sortExpensesByAmount,
+} = expensesSlicer.actions;
 export default expenseReducer;

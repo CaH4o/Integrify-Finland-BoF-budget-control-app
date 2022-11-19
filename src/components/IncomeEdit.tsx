@@ -1,6 +1,7 @@
 import React from "react";
-import { Box, Button, Modal } from "@mui/material";
+import { Box, Typography, Button, Modal } from "@mui/material";
 import FlipCameraAndroidIcon from "@mui/icons-material/FlipCameraAndroid";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 import { tIncome } from "../types/tIncome";
 import IncomeForm from "./IncomeForm";
@@ -15,26 +16,31 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  display: "flex",
+  flexDirection: "column",
 };
 
 export default function IncomeEdit({ income }: { income: tIncome }) {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <Button onClick={handleOpen} color="secondary">
+      <Button onClick={()=>setOpen(true)} color="secondary">
         <FlipCameraAndroidIcon />
       </Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <Modal open={open}>
         <Box sx={style}>
-          <IncomeForm />
+          <Typography textAlign="center"> Edit the income</Typography>
+          <IncomeForm income={income} setOpen={setOpen}/>
+          <Button
+            sx={{ m: 1 }}
+            variant="contained"
+            endIcon={<RestartAltIcon />}
+            color="error"
+            onClick={()=>setOpen(false)}
+          >
+            Close without changing
+          </Button>
         </Box>
       </Modal>
     </div>
