@@ -26,35 +26,27 @@ export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ExpensesForm>({ resolver: yupResolver(expensesSchema) });
+  } = useForm<ExpensesForm>({
+    defaultValues: {
+      expenseAmount: expense ? expense.expenseAmount : 0,
+      expenseDate: expense ? expense.expenseDate : "",
+      expenseSource: expense ? expense.expenseSource : "",
+    },
+    resolver: yupResolver(expensesSchema),
+  });
   const dispatch = useAppDispatch();
+  const [message, setMessage] = useState<string>("");
   const balance: number = useAppSelector(
     (state: RootState) => state.balanceReducer
   );
-  const [expenseSource, setExpenseSource] = useState<string>(
-    expense ? expense.expenseSource : ""
-  );
-  const [expenseAmount, setExpenseAmount] = useState<number>(
-    expense ? expense.expenseAmount : 0
-  );
-  const [expenseDate, setExpenseDate] = useState<string>(
-    expense ? expense.expenseDate : ""
-  );
-  const [message, setMessage] = useState<string>("");
 
   function onSubmit(data: ExpensesForm) {
     const expenseSource: string = data.expenseSource;
     const expenseAmount: number = data.expenseAmount;
     const expenseDate: string = data.expenseDate;
+    const editExpenseAmount: number = expense ? expense.expenseAmount : 0;
 
-    /*   if (expenseAmount <= 0) {
-      setMessage("The amount is incorrect");
-      setTimeout(function () {
-        setMessage("");
-      }, 3000);
-      return;
-    } */
-    if (balance >= expenseAmount) {
+    if (balance >= expenseAmount - editExpenseAmount) {
       const sendExpense: tExpense = {
         id: expense ? expense.id : Date.now().toString(),
         expenseSource,
@@ -70,7 +62,6 @@ export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
 
       reset();
       if (setOpen) setOpen(false);
-      
     } else {
       setMessage("Error: Balance is less then you need");
       setTimeout(function () {
@@ -91,21 +82,18 @@ export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
         required
         label="Expense source"
         placeholder="bill for ..."
-        //min="0"
         type="text"
-        //onChange={(e) => setExpenseSource(e.target.value)}
-        //value={expenseSource}
         {...register("expenseSource")}
+        error={errors.expenseSource ? true : false}
       />
       <FormControl sx={{ m: 1 }} required>
         <InputLabel htmlFor="expenseAmount">Amount of expense</InputLabel>
         <OutlinedInput
           label="Amount of expense"
           type="number"
-          //onChange={(e) => setExpenseAmount(Number(e.target.value))}
           startAdornment={<InputAdornment position="start">€</InputAdornment>}
-          //value={expenseAmount || ""}
           {...register("expenseAmount")}
+          error={errors.expenseAmount ? true : false}
         />
       </FormControl>
       <TextField
@@ -113,10 +101,9 @@ export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
         required
         label="Date of expense"
         type="date"
-        //onChange={(e) => setExpenseDate(e.target.value)}
         InputLabelProps={{ shrink: true }}
-        //value={expenseDate}
         {...register("expenseDate")}
+        error={errors.expenseDate ? true : false}
       />
       <Button
         sx={{ m: 1 }}
@@ -127,17 +114,18 @@ export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
       >
         {expense ? "Edit expense" : "Add expense"}
       </Button>
-
-      {errors.expenseSource?.message && (
-        <span className="error">{errors.expenseSource.message}</span>
-      )}
-      {errors.expenseAmount?.message && (
-        <span className="error">{errors.expenseAmount.message}</span>
-      )}
-      {errors.expenseDate?.message && (
-        <span className="error">{errors.expenseDate.message}</span>
-      )}
-      {message.length > 0 && <span className="error">{message}</span>}
+      <p>
+        {errors.expenseSource?.message && (
+          <span className="error">{errors.expenseSource.message}</span>
+        )}
+        {errors.expenseAmount?.message && (
+          <span className="error">{errors.expenseAmount.message}</span>
+        )}
+        {errors.expenseDate?.message && (
+          <span className="error">{errors.expenseDate.message}</span>
+        )}
+        {message.length > 0 && <span className="error">{message}</span>}
+      </p>
     </Box>
   );
 }
