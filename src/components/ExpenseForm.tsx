@@ -7,18 +7,18 @@ import {
   InputAdornment,
   FormControl,
   TextField,
+  Typography,
 } from "@mui/material";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { tExpense } from "../types/tExpense";
+import { IExpenseForm, tExpense } from "../types/tExpense";
 import { pExpenseForm } from "../types/pExpenseForm";
 import { RootState } from "../redux/store";
 import { useAppSelector, useAppDispatch } from "../hooks/reduxHooks";
 import { addExpenses, editExpenses } from "../redux/reducers/expenses";
-import { ExpensesForm } from "../types/tForm";
-import { expensesSchema } from "./schema/ExpenseForm";
+import { expensesSchema } from "../schema/ExpenseForm";
 
 export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
   const {
@@ -26,7 +26,7 @@ export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ExpensesForm>({
+  } = useForm<IExpenseForm>({
     defaultValues: {
       expenseAmount: expense ? expense.expenseAmount : 0,
       expenseDate: expense ? expense.expenseDate : "",
@@ -40,7 +40,7 @@ export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
     (state: RootState) => state.balanceReducer
   );
 
-  function onSubmit(data: ExpensesForm) {
+  function onSubmit(data: IExpenseForm) {
     const expenseSource: string = data.expenseSource;
     const expenseAmount: number = data.expenseAmount;
     const expenseDate: string = data.expenseDate;
@@ -92,7 +92,8 @@ export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
           label="Amount of expense"
           type="number"
           startAdornment={<InputAdornment position="start">€</InputAdornment>}
-          {...register("expenseAmount")}
+          {...(register("expenseAmount")/* ,
+          { max: balance - (expense ? expense.expenseAmount : 0) } */)}
           error={errors.expenseAmount ? true : false}
         />
       </FormControl>
@@ -114,7 +115,7 @@ export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
       >
         {expense ? "Edit expense" : "Add expense"}
       </Button>
-      <p>
+      <Typography color="textPrimary" sx={{ textAlign: "center" }}>
         {errors.expenseSource?.message && (
           <span className="error">{errors.expenseSource.message}</span>
         )}
@@ -125,7 +126,7 @@ export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
           <span className="error">{errors.expenseDate.message}</span>
         )}
         {message.length > 0 && <span className="error">{message}</span>}
-      </p>
+      </Typography>
     </Box>
   );
 }
