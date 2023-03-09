@@ -4,3 +4,5 @@ export interface tIncome {
     incomeAmount: number;
     incomeDate: string;
 }
+
+export interface IIncomeForm extends Omit<tIncome, "id"> {}

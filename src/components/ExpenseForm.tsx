@@ -21,6 +21,11 @@ import { addExpenses, editExpenses } from "../redux/reducers/expenses";
 import { expensesSchema } from "../schema/ExpenseForm";
 
 export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
+  const dispatch = useAppDispatch();
+  const [message, setMessage] = useState<string>("");
+  const balance: number = useAppSelector(
+    (state: RootState) => state.balanceReducer
+  );
   const {
     register,
     handleSubmit,
@@ -34,11 +39,6 @@ export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
     },
     resolver: yupResolver(expensesSchema),
   });
-  const dispatch = useAppDispatch();
-  const [message, setMessage] = useState<string>("");
-  const balance: number = useAppSelector(
-    (state: RootState) => state.balanceReducer
-  );
 
   function onSubmit(data: IExpenseForm) {
     const expenseSource: string = data.expenseSource;

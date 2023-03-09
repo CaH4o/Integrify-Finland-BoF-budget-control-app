@@ -7,68 +7,75 @@ import {
   InputAdornment,
   FormControl,
   TextField,
+  Typography,
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import { RootState } from "../redux/store";
-import { tIncome } from "../types/tIncome";
+import { IIncomeForm, tIncome } from "../types/tIncome";
 import { pIncomeForm } from "../types/pIncomeForm";
 import { addIncome, editIncome } from "../redux/reducers/incomes";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { incomesSchema } from "../schema/IncomeForm";
 
 export default function IncomeForm({ income, setOpen }: pIncomeForm) {
   const dispatch = useAppDispatch();
+  const [message, setMessage] = useState<string>("");
   const balance: number = useAppSelector(
     (state: RootState) => state.balanceReducer
   );
-  const [incomeSource, setIncomeSource] = useState<string>(
-    income ? income.incomeSource : ""
-  );
-  const [incomeAmount, setIncomeAmount] = useState<number>(
-    income ? income.incomeAmount : 0
-  );
-  const [incomeDate, setIncomeDate] = useState<string>(
-    income ? income.incomeDate : ""
-  );
-  const [message, setMessage] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IIncomeForm>({
+    defaultValues: {
+      incomeSource: income ? income.incomeSource : "",
+      incomeAmount: income ? income.incomeAmount : 0,
+      incomeDate: income ? income.incomeDate : "",
+    },
+    resolver: yupResolver(incomesSchema),
+  });
 
-  function submit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (incomeAmount <= 0) {
-      setMessage("Error: The amount is incorrect");
+  function onSubmit(data: IIncomeForm) {
+    const incomeSource: string = data.incomeSource;
+    const incomeAmount: number = data.incomeAmount;
+    const incomeDate: string = data.incomeDate;
+    const editIncomeAmount: number = income ? income.incomeAmount : 0;
+
+    if (balance >= incomeAmount - editIncomeAmount) {
+      const sendIncome: tIncome = {
+        id: income ? income.id : Date.now().toString(),
+        incomeSource,
+        incomeAmount,
+        incomeDate,
+      };
+
+      if (income) {
+        dispatch(editIncome(sendIncome));
+      } else {
+        dispatch(addIncome(sendIncome));
+      }
+
+      reset();
+      if (setOpen) setOpen(false);
+    } else {
+      setMessage("Error: The amount is less then balance");
       setTimeout(function () {
         setMessage("");
       }, 3000);
       return;
     }
-    const sendIncome: tIncome = {
-      id: income ? income.id : Date.now().toString(),
-      incomeSource,
-      incomeAmount,
-      incomeDate,
-    };
-    if (income) {
-      if (balance < income.incomeAmount - incomeAmount) {
-        setMessage("Error: The amount is less then balance");
-        setTimeout(function () {
-          setMessage("");
-        }, 3000);
-        return;
-      } else {
-        dispatch(editIncome(sendIncome));
-        if (setOpen) setOpen(false);
-      }
-    } else {
-      dispatch(addIncome(sendIncome));
-    }
-    e.currentTarget.reset();
   }
 
   return (
     <Box
       component="form"
       autoComplete="off"
-      onSubmit={(e) => submit(e)}
+      onSubmit={handleSubmit(onSubmit)}
       className="componentForm"
     >
       <TextField
@@ -77,17 +84,20 @@ export default function IncomeForm({ income, setOpen }: pIncomeForm) {
         label="Income source"
         placeholder="Salary"
         type="text"
-        onChange={(e) => setIncomeSource(e.target.value)}
-        value={incomeSource}
+        {...register("incomeSource")}
+        error={errors.incomeSource ? true : false}
       />
       <FormControl sx={{ m: 1 }} required>
         <InputLabel htmlFor="incomeAmount">Amount of income</InputLabel>
         <OutlinedInput
           label="Amount of income"
           type="number"
-          onChange={(e) => setIncomeAmount(Number(e.target.value))}
           startAdornment={<InputAdornment position="start">€</InputAdornment>}
-          value={incomeAmount || ""}
+          {
+            ...register("incomeAmount") /* ,
+          { max: balance - (income ? income.incomeAmount : 0) } */
+          }
+          error={errors.incomeAmount ? true : false}
         />
       </FormControl>
       <TextField
@@ -95,9 +105,9 @@ export default function IncomeForm({ income, setOpen }: pIncomeForm) {
         required
         label="Date of income"
         type="date"
-        onChange={(e) => setIncomeDate(e.target.value)}
         InputLabelProps={{ shrink: true }}
-        value={incomeDate}
+        {...register("incomeDate")}
+        error={errors.incomeDate ? true : false}
       />
       <Button
         sx={{ m: 1 }}
@@ -109,7 +119,18 @@ export default function IncomeForm({ income, setOpen }: pIncomeForm) {
       >
         {income ? "Edit income" : "Add income"}
       </Button>
-      {message.length > 0 && <span className="error">{message}</span>}
+      <Typography color="textPrimary" sx={{ textAlign: "center" }}>
+        {errors.incomeSource?.message && (
+          <span className="error">{errors.incomeSource.message}</span>
+        )}
+        {errors.incomeAmount?.message && (
+          <span className="error">{errors.incomeAmount.message}</span>
+        )}
+        {errors.incomeDate?.message && (
+          <span className="error">{errors.incomeDate.message}</span>
+        )}
+        {message.length > 0 && <span className="error">{message}</span>}
+      </Typography>
     </Box>
   );
 }
