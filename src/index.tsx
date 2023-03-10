@@ -12,16 +12,16 @@ const root = ReactDOM.createRoot(
 
 const renderApp = () => {
   root.render(
-    <Provider store={store}>
-      <React.StrictMode>
+    <React.StrictMode>
+      <Provider store={store}>
         <App />
-      </React.StrictMode>
-    </Provider>
+      </Provider>
+    </React.StrictMode>
   );
-}
+};
 
 if (process.env.NODE_ENV !== "production" && module.hot) {
-  module.hot.accept("./App", renderApp)
+  module.hot.accept("./App", renderApp);
 }
 
 renderApp();
