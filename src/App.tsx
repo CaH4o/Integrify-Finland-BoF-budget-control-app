@@ -20,8 +20,8 @@ export const ThemeContext = createContext<tContext>({
 });
 
 function App() {
-  const [mode, setMode] = useState<"light" | "dark">("light");
   const dispatch = useAppDispatch();
+  const [mode, setMode] = useState<"light" | "dark">("light");
   const incomes: tIncome[] = useAppSelector(
     (state: RootState) => state.incomeReducer
   );
