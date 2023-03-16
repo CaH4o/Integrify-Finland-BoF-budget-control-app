@@ -15,12 +15,12 @@ beforeEach(function () {
 });
 
 describe("Suite of Income reducer", function () {
-  test("Test of Income reducer / initial state 1", function () {
+  test("Income reducer / initial state 1", function () {
     const incomes = incomeReducer([], { type: "any" });
     expect(incomes).toEqual([]);
   });
 
-  test("Test of Income reducer / Initial state 2", function () {
+  test("Income reducer / initial state 2", function () {
     expect(store.getState().incomeReducer.length).toBe(0);
   });
 

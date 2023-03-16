@@ -19,10 +19,7 @@ const savingsSlicer = createSlice({
     setTarget: function (state: tSavingsTarget, action: PayloadAction<number>) {
       state.target = action.payload;
     },
-    resetSavings: function (
-      state: tSavingsTarget,
-      action: PayloadAction<number>
-    ) {
+    resetSavings: function (state: tSavingsTarget) {
       state.savings = 0;
     },
   },

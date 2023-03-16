@@ -12,7 +12,7 @@ const balanceSlicer = createSlice({
     addBalance: function (state: number, action: PayloadAction<number>) {
       return state + action.payload;
     },
-    resetBalance: function (state: number, action: PayloadAction<number>) {
+    resetBalance: function (state: number) {
       return 0;
     },
   },
