@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   Box,
   OutlinedInput,
@@ -8,24 +8,24 @@ import {
   FormControl,
   TextField,
   Typography,
-} from "@mui/material";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+} from "@mui/material"
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
 
-import { RootState } from "../redux/store";
-import { IIncomeForm, tIncome } from "../types/tIncome";
-import { pIncomeForm } from "../types/pIncomeForm";
-import { addIncome, editIncome } from "../redux/reducers/incomes";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { incomesSchema } from "../schema/IncomeForm";
+import { RootState } from "../redux/store"
+import { IIncomeForm, tIncome } from "../types/tIncome"
+import { pIncomeForm } from "../types/pIncomeForm"
+import { addIncome, editIncome } from "../redux/reducers/incomes"
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks"
+import { incomesSchema } from "../schema/IncomeForm"
 
 export default function IncomeForm({ income, setOpen }: pIncomeForm) {
-  const dispatch = useAppDispatch();
-  const [message, setMessage] = useState<string>("");
+  const dispatch = useAppDispatch()
+  const [message, setMessage] = useState<string>("")
   const balance: number = useAppSelector(
     (state: RootState) => state.balanceReducer
-  );
+  )
   const {
     register,
     handleSubmit,
@@ -38,36 +38,29 @@ export default function IncomeForm({ income, setOpen }: pIncomeForm) {
       incomeDate: income ? income.incomeDate : "",
     },
     resolver: yupResolver(incomesSchema),
-  });
+  })
 
   function onSubmit(data: IIncomeForm) {
-    const incomeSource: string = data.incomeSource;
-    const incomeAmount: number = data.incomeAmount;
-    const incomeDate: string = data.incomeDate;
-    const editIncomeAmount: number = income ? income.incomeAmount : 0;
+    const incomeSource: string = data.incomeSource
+    const incomeAmount: number = data.incomeAmount
+    const incomeDate: string = data.incomeDate
+    const id: string = income ? income.id : Date.now().toString()
+    const sendIncome: tIncome = { id, incomeSource, incomeAmount, incomeDate }
 
-    if (balance >= incomeAmount - editIncomeAmount) {
-      const sendIncome: tIncome = {
-        id: income ? income.id : Date.now().toString(),
-        incomeSource,
-        incomeAmount,
-        incomeDate,
-      };
-
-      if (income) {
-        dispatch(editIncome(sendIncome));
+    if (income) {
+      if (balance >= income.incomeAmount - incomeAmount) {
+        dispatch(editIncome(sendIncome))
+        reset()
+        if (setOpen) setOpen(false)
       } else {
-        dispatch(addIncome(sendIncome));
+        setMessage("Error: The amount is less then balance")
+        setTimeout(function () {
+          setMessage("")
+        }, 3000)
+        return
       }
-
-      reset();
-      if (setOpen) setOpen(false);
     } else {
-      setMessage("Error: The amount is less then balance");
-      setTimeout(function () {
-        setMessage("");
-      }, 3000);
-      return;
+      dispatch(addIncome(sendIncome))
     }
   }
 
@@ -132,5 +125,5 @@ export default function IncomeForm({ income, setOpen }: pIncomeForm) {
         {message.length > 0 && <span className="error">{message}</span>}
       </Typography>
     </Box>
-  );
+  )
 }

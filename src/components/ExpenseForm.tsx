@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   Box,
   OutlinedInput,
@@ -8,24 +8,24 @@ import {
   FormControl,
   TextField,
   Typography,
-} from "@mui/material";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+} from "@mui/material"
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
 
-import { IExpenseForm, tExpense } from "../types/tExpense";
-import { pExpenseForm } from "../types/pExpenseForm";
-import { RootState } from "../redux/store";
-import { useAppSelector, useAppDispatch } from "../hooks/reduxHooks";
-import { addExpenses, editExpenses } from "../redux/reducers/expenses";
-import { expensesSchema } from "../schema/ExpenseForm";
+import { IExpenseForm, tExpense } from "../types/tExpense"
+import { pExpenseForm } from "../types/pExpenseForm"
+import { RootState } from "../redux/store"
+import { useAppSelector, useAppDispatch } from "../hooks/reduxHooks"
+import { addExpenses, editExpenses } from "../redux/reducers/expenses"
+import { expensesSchema } from "../schema/ExpenseForm"
 
 export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
-  const dispatch = useAppDispatch();
-  const [message, setMessage] = useState<string>("");
+  const dispatch = useAppDispatch()
+  const [message, setMessage] = useState<string>("")
   const balance: number = useAppSelector(
     (state: RootState) => state.balanceReducer
-  );
+  )
   const {
     register,
     handleSubmit,
@@ -38,35 +38,35 @@ export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
       expenseSource: expense ? expense.expenseSource : "",
     },
     resolver: yupResolver(expensesSchema),
-  });
+  })
 
   function onSubmit(data: IExpenseForm) {
-    const expenseSource: string = data.expenseSource;
-    const expenseAmount: number = data.expenseAmount;
-    const expenseDate: string = data.expenseDate;
-    const editExpenseAmount: number = expense ? expense.expenseAmount : 0;
+    const expenseSource: string = data.expenseSource
+    const expenseAmount: number = data.expenseAmount
+    const expenseDate: string = data.expenseDate
+    const editExpenseAmount: number = expense ? expense.expenseAmount : 0
+    const id: string = expense ? expense.id : Date.now().toString()
+    const sendExpense: tExpense = {
+      id,
+      expenseSource,
+      expenseAmount,
+      expenseDate,
+    }
 
     if (balance >= expenseAmount - editExpenseAmount) {
-      const sendExpense: tExpense = {
-        id: expense ? expense.id : Date.now().toString(),
-        expenseSource,
-        expenseAmount,
-        expenseDate,
-      };
-
       if (expense) {
-        dispatch(editExpenses(sendExpense));
+        dispatch(editExpenses(sendExpense))
       } else {
-        dispatch(addExpenses(sendExpense));
+        dispatch(addExpenses(sendExpense))
       }
 
-      reset();
-      if (setOpen) setOpen(false);
+      reset()
+      if (setOpen) setOpen(false)
     } else {
-      setMessage("Error: Balance is less then you need");
+      setMessage("Error: Balance is less then you need")
       setTimeout(function () {
-        setMessage("");
-      }, 3000);
+        setMessage("")
+      }, 3000)
     }
   }
 
@@ -92,8 +92,10 @@ export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
           label="Amount of expense"
           type="number"
           startAdornment={<InputAdornment position="start">€</InputAdornment>}
-          {...(register("expenseAmount")/* ,
-          { max: balance - (expense ? expense.expenseAmount : 0) } */)}
+          {
+            ...register("expenseAmount") /* ,
+          { max: balance - (expense ? expense.expenseAmount : 0) } */
+          }
           error={errors.expenseAmount ? true : false}
         />
       </FormControl>
@@ -128,5 +130,5 @@ export default function ExpenseForm({ expense, setOpen }: pExpenseForm) {
         {message.length > 0 && <span className="error">{message}</span>}
       </Typography>
     </Box>
-  );
+  )
 }

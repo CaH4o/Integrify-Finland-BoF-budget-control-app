@@ -1,7 +1,9 @@
-.root {
-  min-height: 100hv;
+body {
+  margin: 0;
+  height: 100%;
   background-color: #9d67db;
 }
+
 .component {
   padding: 0.3rem;
   margin: 0.2rem;
@@ -10,20 +12,24 @@
   gap: 0.2rem;
   box-shadow: 3px 3px 1px 1px slategray;
 }
+
 .componentForm {
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
 }
+
 .componentTable {
   padding: 0.3rem;
   display: flex;
   flex-direction: column;
 }
+
 .textCenter {
   text-align: center;
   padding: 0.3rem;
 }
+
 .error {
   color: red;
   font-weight: bold;
