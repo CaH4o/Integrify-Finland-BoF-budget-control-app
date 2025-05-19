@@ -39,7 +39,16 @@ By building this project, I improved my skills in React, Material UI, state mana
 - Implement styling and save data in local memory (localStorage)
 - Include the following logic blocks: Income, Expenses, Savings, Balance
 - Provide test coverage
-- Reference folder task with screenshots as an example
+- Reference screenshots as an example
+
+Screenshot 1:
+![Screenshot 1](media/Screenshot_2022-10-10_at_17.26.52.png)
+
+Screenshot 2:
+![Screenshot 2](media/Screenshot_2022-10-10_at_17.28.16.png)
+
+Screenshot 3:
+![Screenshot 3](media/Screenshot_2022-10-10_at_17.44.06.png)
 
 ## 🚀 Getting Started
 
