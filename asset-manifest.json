@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Integrify-Finland-BoF-budget-control-app/static/css/main.23faa81e.css",
-    "main.js": "/Integrify-Finland-BoF-budget-control-app/static/js/main.9941712e.js",
+    "main.js": "/Integrify-Finland-BoF-budget-control-app/static/js/main.f3ce4357.js",
     "static/js/787.3394d61f.chunk.js": "/Integrify-Finland-BoF-budget-control-app/static/js/787.3394d61f.chunk.js",
     "index.html": "/Integrify-Finland-BoF-budget-control-app/index.html",
     "main.23faa81e.css.map": "/Integrify-Finland-BoF-budget-control-app/static/css/main.23faa81e.css.map",
-    "main.9941712e.js.map": "/Integrify-Finland-BoF-budget-control-app/static/js/main.9941712e.js.map",
+    "main.f3ce4357.js.map": "/Integrify-Finland-BoF-budget-control-app/static/js/main.f3ce4357.js.map",
     "787.3394d61f.chunk.js.map": "/Integrify-Finland-BoF-budget-control-app/static/js/787.3394d61f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.23faa81e.css",
-    "static/js/main.9941712e.js"
+    "static/js/main.f3ce4357.js"
   ]
 }
