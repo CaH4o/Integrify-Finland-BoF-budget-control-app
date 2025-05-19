@@ -1,43 +1,61 @@
-# Getting Started with Create React App
+# Budget Control App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Name of the project
 
-## Available Scripts
+**Front-end educational project:** Budget Control App
 
-In the project directory, you can run:
+## Demo
 
-### `npm start`
+[Click to view the live demo](https://cah4o.github.io/Integrify-Finland-BoF-budget-control-app/)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Tech Stack
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- HTML, CSS
+- TypeScript
+- React
+- Redux
+- Material UI
+- React Hook Form
+- localStorage
+- Jest (for testing)
 
-### `npm test`
+## Description
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This application helps manage a budget by tracking income, expenses, savings, and balance. Each data category is stored in global state and saved to localStorage for persistence.
 
-### `npm run build`
+Key features:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Four main blocks: **Income**, **Expenses**, **Savings**, and **Balance**
+- Responsive design using **Material UI** and **Flexbox**
+- Theme toggle (light/dark mode) using **Material UI's** palette and context API
+- State management using **Reducer** and **Context Provider**
+- Written with **TypeScript** and tested with **Jest**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+By building this project, I improved my skills in React, Material UI, state management, and data storage in the browser.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Project Requirements (by the Academy)
 
-### `npm run eject`
+- Create a React-based budget app using JavaScript or TypeScript
+- Implement styling and save data in local memory (localStorage)
+- Include the following logic blocks: Income, Expenses, Savings, Balance
+- Provide test coverage
+- Reference folder task with screenshots as an example
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 🚀 Getting Started
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### In the project directory, you can run:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Installs all the necessary dependencies.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```bash
+npm init
+```
+
+Runs the app in development mode. Open http://localhost:3000 to view it in your browser. The page reloads on edits, and lint errors will be shown in the console.
+
+```bash
+npm start
+```
 
 ## Learn More
 
